@@ -5,7 +5,6 @@ import { Profile } from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
 import { Navbar } from "./utilities/Navbar";
-import './App.css'
 
 export default function App(){
   return(
