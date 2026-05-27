@@ -3,6 +3,7 @@ import type { Post } from "../models";
 import { getFromEndpoint } from "../utilities/helpers";
 import { PostDetailedDisplay, PostLimitedDisplay } from "../utilities/postDisplay";
 import "../style/post.css"
+
 export function Posts() {
   const [posts, setPosts] = useState<Array<Post>>([])
   useEffect(() => {
@@ -15,7 +16,7 @@ export function Posts() {
   }, []);
 
   return (
-    <div className="container">
+    <div className="postcontainer">
       <h1>Posts</h1>
       <div className="postList"> {posts.map((post) => (
         <PostLimitedDisplay key={post.id}

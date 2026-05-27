@@ -1,3 +1,4 @@
+
 export async function getFromEndpoint(endpoint : string) : Promise<any> {
   const url = "http://localhost:3000/" + endpoint;
   try {

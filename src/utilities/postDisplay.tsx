@@ -9,7 +9,7 @@ export const PostLimitedDisplay: FC<Post> = ({ Title, Body, User, Tags }) => {
     <div className='postLimited'>
       <h1>{Title}</h1>
       <h2>Written by {User.FirstName}</h2>
-      <ul> {Tags.map((tag) => (
+      <ul>{Tags.map((tag) => (
         <p key={tag.id}> Tags: {tag.Title}</p>
       ))}</ul>
     </div >

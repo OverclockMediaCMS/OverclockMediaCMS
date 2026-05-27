@@ -5,10 +5,13 @@ import { Profile } from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
 import { Navbar } from "./utilities/Navbar";
-
+import './style/app.css'
 export default function App(){
   return(
     <BrowserRouter>
+      <div className="app">
+    <Navbar/>
+      <div className="content">
       <Routes>
         <Route path="/" element={<Dashboard/>}/>
         <Route path="/Dashboard" element={<Dashboard/>}/>
@@ -17,7 +20,8 @@ export default function App(){
         <Route path="/Media" element={<Media/>}/>
         <Route path="/Posts" element={<Posts/>}/>
       </Routes>
-    <Navbar/>
+      </div>
+    </div>
     </BrowserRouter>
   )
 }
