@@ -15,7 +15,10 @@ export function Dashboard(){
   return(
     <div>
       <h1>Dashboard</h1>
-      <p>{users[0]?.Email}</p>
+      <p>All users: </p>
+      <ul> {users.map((user) => (
+        <p>{user.Email}</p>
+      ))}</ul>
     </div>
   )
 }
