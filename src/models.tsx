@@ -13,6 +13,15 @@ export interface Post {
   Title: string;
   Body: string;
   isDraft: boolean;
+  Date: string;
   User: User;
   Tags: Tag[];
+}
+export interface Media {
+  id: number;
+  Title: string;
+  FileExtension: string;
+  FilePath: string;
+  Date: string;
+  User : User;
 }
