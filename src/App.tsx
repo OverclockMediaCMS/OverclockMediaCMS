@@ -5,10 +5,12 @@ import { Profile } from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
 import { Navbar } from "./utilities/Navbar";
+import Layout  from "./components/Layout"; // import Header Layout - Sirawit
 import './style/app.css'
 export default function App(){
   return(
     <BrowserRouter>
+    <Layout>
       <div className="app">
     <Navbar/>
       <div className="content">
@@ -22,6 +24,7 @@ export default function App(){
       </Routes>
       </div>
     </div>
+    </Layout>
     </BrowserRouter>
   )
 }

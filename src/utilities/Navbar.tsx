@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { type FC } from "react";
 import "../style/navbar.css"
-import Button from 'react-bootstrap/Button';
 //asset file paths
 import dashboardIcon from "../assets/dashboard.png"
 import profileIcon from "../assets/profile.png"
