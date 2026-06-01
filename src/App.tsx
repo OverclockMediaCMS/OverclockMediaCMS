@@ -5,6 +5,8 @@ import { Profile } from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
 import { Navbar } from "./utilities/Navbar";
+import { CreatePost } from "./screens/CreatePost"
+
 
 export default function App(){
   return(
@@ -16,6 +18,7 @@ export default function App(){
         <Route path="/Settings" element={<Settings/>}/>
         <Route path="/Media" element={<Media/>}/>
         <Route path="/Posts" element={<Posts/>}/>
+        <Route path="/CreatePost" element={<CreatePost/>}/>
       </Routes>
     <Navbar/>
     </BrowserRouter>
