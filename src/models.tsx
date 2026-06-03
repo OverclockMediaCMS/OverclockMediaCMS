@@ -7,6 +7,8 @@ export interface User {
   Email: string;
   FirstName: string;
   LastName: string;
+  MobilePhone: number;
+  InternalPhone: number;
 }
 export interface Post {
   id: number;
@@ -16,6 +18,7 @@ export interface Post {
   Date: string;
   User: User;
   Tags: Tag[];
+  Comments: Comment[];
 }
 export interface Media {
   id: number;
@@ -24,4 +27,18 @@ export interface Media {
   FilePath: string;
   Date: string;
   User : User;
+}
+export interface Comment {
+  id: number;
+  Description: string;
+  User: User;
+  Date: Date;
+}
+export interface CreateComment {
+  Description: string;
+  UserId: number;
+  PostId: number;
+}
+export interface Theme {
+  Darkmode: boolean;
 }

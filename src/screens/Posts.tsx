@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import type { Post } from "../models";
 import { getFromEndpoint } from "../utilities/helpers";
-import { PostDetailedDisplay, PostLimitedDisplay } from "../utilities/postComponents";
+import {PostLimitedDisplay } from "../utilities/postComponents";
 import "../style/post.css"
+import { useNavigate } from "react-router-dom";
 
 export function Posts() {
-  const [posts, setPosts] = useState<Array<Post>>([])
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState<Array<Post>>([]);
   const [query, setQuery] = useState("");
+  const [selectedPostId, setSelectedPostId] = useState(-1);
+
   const fetchData = async (contains : string) => {
     let u = await getFromEndpoint(`posts/${contains}`);
     let posts: Array<Post> = u;
@@ -15,7 +19,11 @@ export function Posts() {
   useEffect(() => {
     fetchData("");
   }, []);
-
+  useEffect(() => {
+    if(selectedPostId != -1){
+      navigate(`/ViewPost/${selectedPostId}`)
+    }
+  }, [selectedPostId]);
   return (
     <div>
       <h1>Posts</h1>
@@ -32,7 +40,9 @@ export function Posts() {
           isDraft={post.isDraft}
           Tags={post.Tags}
           Date={post.Date}
-        />
+          Comments={post.Comments}
+          onClick= {() =>{setSelectedPostId(post.id)}}
+          />
       ))}</div>
     </div>
   )
