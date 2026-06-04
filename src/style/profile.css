@@ -1,0 +1,85 @@
+.container {
+  background-color: #ffffff;
+  color: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
+}
+
+.mainContent {
+  padding: 2rem 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.avatarWrapper {
+  width: 120px;
+  height: 120px;
+  border: 1px solid #000000;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileHeaderText h2 {
+  font-size: 2.5rem;
+  margin: 0;
+  color: #000;
+}
+
+.profileHeaderText p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.card {
+  border: 1px solid #000000;
+  padding: 1.5rem;
+  margin-top: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 5px;
+}
+
+.row span:first-child {
+  font-weight: bold;
+}
+
+
+.editBtn {
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editBtn:hover {
+  background: #333333;
+}
+
+.row input {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: right;
+  font-family: inherit;
+}

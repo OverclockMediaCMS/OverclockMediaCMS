@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./screens/Dashboard";
 import { Settings } from "./screens/Settings";
-import { Profile } from "./screens/Profile";
+import  Profile from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
+import Layout  from "./components/Layout"; // import Header Layout - Sirawit
 import { ViewPost } from "./screens/ViewPost";
 import { Navbar } from "./utilities/navbar";
 import './style/app.css'
@@ -26,6 +27,7 @@ export default function App(){
   }, [])
   return(
     <BrowserRouter>
+    <Layout>
       <div className="app">
     <Navbar/>
       <div className="content">
@@ -40,6 +42,7 @@ export default function App(){
       </Routes>
       </div>
     </div>
+    </Layout>
     </BrowserRouter>
   )
 }
