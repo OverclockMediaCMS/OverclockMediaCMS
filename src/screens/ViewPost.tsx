@@ -8,7 +8,7 @@ export function ViewPost(){
   const [thisPost, setThisPost] = useState<Post | null>(null)
   const {id} = useParams();
   const fetchPost = async () => {
-    let p = await getFromEndpoint(`posts/${id}`);
+    let p = await getFromEndpoint(`postsbyid/${id}`);
     let post: Post = p;
     setThisPost(p);
   }
