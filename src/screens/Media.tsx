@@ -12,6 +12,7 @@ export function Media(){
       let media: Array<Media> = u;
       setMedia(media);
     }
+    
     useEffect(() => {
       fetchData("");
     }, []);

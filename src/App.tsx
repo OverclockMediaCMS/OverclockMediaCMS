@@ -4,8 +4,9 @@ import { Settings } from "./screens/Settings";
 import  Profile from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
-import { Navbar } from "./utilities/Navbar";
 import Layout  from "./components/Layout"; // import Header Layout - Sirawit
+import { ViewPost } from "./screens/ViewPost";
+import { Navbar } from "./utilities/navbar";
 import './style/app.css'
 import { useGlobalContext } from "./GlobalContext";
 import { getFromEndpoint } from "./utilities/helpers";
@@ -21,6 +22,9 @@ export default function App(){
       context?.setUser(newUser);
     }
   }
+  useEffect( () => {
+    setUserById(1);
+  }, [])
   return(
     <BrowserRouter>
     <Layout>
@@ -34,6 +38,7 @@ export default function App(){
         <Route path="/Settings" element={<Settings/>}/>
         <Route path="/Media" element={<Media/>}/>
         <Route path="/Posts" element={<Posts/>}/>
+        <Route path="/ViewPost/:id" element={<ViewPost/>}/>
       </Routes>
       </div>
     </div>
