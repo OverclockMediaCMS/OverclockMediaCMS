@@ -1,13 +1,26 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./screens/Dashboard";
 import { Settings } from "./screens/Settings";
-import { Profile } from "./screens/Profile";
+import  Profile from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
 import { Navbar } from "./utilities/Navbar";
 import Layout  from "./components/Layout"; // import Header Layout - Sirawit
 import './style/app.css'
+import { useGlobalContext } from "./GlobalContext";
+import { getFromEndpoint } from "./utilities/helpers";
+import type { User } from "./models";
+import { useEffect } from "react";
+
 export default function App(){
+  const context = useGlobalContext();
+  async function setUserById(id:number) {
+    let u = await getFromEndpoint(`users/${id}`);
+    let newUser : User = u;
+    if(u != undefined){
+      context?.setUser(newUser);
+    }
+  }
   return(
     <BrowserRouter>
     <Layout>
