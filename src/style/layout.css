@@ -1,0 +1,48 @@
+.header-container {
+    background-color: #e64141;
+}
+
+.header-nav {
+    width: 100%
+}
+
+.header-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.wireframe-logo {
+    display: block;
+    width: 200px;
+    height: 100px;
+}
+
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Space between the text and the icon */
+}
+
+.user-wireframe {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* This makes the square image a perfect circle */
+    background-color: #ccc; /* Generic gray background if image fails */
+    object-fit: cover;
+    border: 2px solid white; /* Optional: gives the icon a nice border */
+}
+
+.header-title, .user-greeting {
+    margin: 0;
+}

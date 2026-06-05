@@ -22,9 +22,9 @@ export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, Us
           <p key={tag.id}> Tags: {tag.Title}</p>
         ))}</ul>
       </div >
-      <div className="commentIcon">
-        <CommentIconWithCounter num={Comments.length}/>
-      </div>
+        <div className="commentIcon">
+          <CommentIconWithCounter num={Comments.length}/>
+        </div>
    </div>
   )
 }
@@ -49,11 +49,11 @@ export const PostDetailedDisplay: FC<Post> = ({ id, Title, Body, User, Tags, Com
     await postToEndpoint("comment", c);
     setNewComment(false);
     setCommentText("");
-    refreshComments(); 
+    refreshComments();
   }
   
   return (
-    <div className='postDetailed'>
+    <div className='postDetalied'>
       <h1>{Title}</h1>
       <h2>Written by {User.FirstName}</h2>
       <ul> {Tags.map((tag) => (

@@ -5,7 +5,8 @@
 }
 
 #root {
-  display : flex;
+  /*Uncomment display to make header fitted to content section - Sirawit */
+  /* display : flex;  */
   min-height: 100vh;
   width: 100%;
 }
