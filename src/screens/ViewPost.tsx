@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type {Post} from '../models'
-import { getFromEndpoint } from "../utilities/helpers";
-import { PostDetailedDisplay } from "../utilities/postComponents";
+import { getFromEndpoint } from "../helpers";
+import { PostDetailedDisplay } from "../components/postComponents";
 import { useParams } from "react-router-dom";
 
 export function ViewPost(){

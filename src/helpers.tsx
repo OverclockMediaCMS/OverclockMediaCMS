@@ -27,8 +27,7 @@ export async function postToEndpoint(endpoint : string, obj : object) : Promise<
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-
-    const result = await response.json();
+    const result = response.json();
     return result;
   } catch (error) {
     return null

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Media } from "../models";
-import { getFromEndpoint } from "../utilities/helpers";
-import { MediaLimitedDisplay } from "../utilities/mediaComponents";
+import { getFromEndpoint } from "../helpers";
+import { MediaLimitedDisplay } from "../components/mediaComponents";
 import '../style/media.css'
 
 export function Media(){

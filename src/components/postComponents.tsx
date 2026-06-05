@@ -5,7 +5,7 @@ import commentIcon from "../assets/comment.png"
 import plusIcon from "../assets/plus.png"
 import "../style/post.css"
 import { useGlobalContext } from "../GlobalContext";
-import { getFromEndpoint, postToEndpoint } from "./helpers";
+import { getFromEndpoint, postToEndpoint } from "../helpers";
 //generic element for displaying post, takes post model as interface
 
 export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, User, Tags, Comments, Date : rawDate, onClick }) => {

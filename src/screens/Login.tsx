@@ -1,0 +1,50 @@
+import { useEffect, useState } from "react";
+import {getFromEndpoint, postToEndpoint} from "../helpers.tsx"
+import type {LoginUser, User} from "../models.tsx"
+import { NavigationButton } from "../components/navigationComponents.tsx";
+import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../GlobalContext.tsx";
+
+export function Login(){
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const navigate = useNavigate();
+  const context = useGlobalContext();
+
+  async function submit(){
+    const u : LoginUser = {
+      Email: email,
+      Password: password,
+    }
+    const reply = await postToEndpoint("users/login", u); 
+    if(reply.status == 200){
+      console.log("success")
+    }
+
+    // if(success){
+    //   context?.setUser(user);
+    //   navigate("/Dashboard");
+    // }else{
+    //   window.alert(reply.error);
+    // }
+  }
+
+  useEffect (() => {
+
+  }, []);
+  return(
+    <div>
+      <label style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5vh'}}>
+      <h1>Login</h1>
+        <text>Email:</text>
+        <input value={email} onChange={ (e) => {setEmail(e.target.value)}}></input>
+        <text>Password:</text>
+        <input value={password} onChange={ (e) => {setPassword(e.target.value)}}></input>
+        <button onClick={submit}>Submit</button>
+        <button onClick={ () => navigate("/Register")}>Register</button>
+      </label>
+    </div>
+  )
+}
+

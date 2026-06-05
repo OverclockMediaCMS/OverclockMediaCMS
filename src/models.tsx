@@ -2,6 +2,19 @@ export interface Tag {
   id: number;
   Title: string;
 }
+
+export interface LoginUser {
+  Email: string;
+  Password: string;
+}
+
+export interface CreateUser {
+  Email: string;
+  FirstName: string;
+  LastName: string;
+  Password: string;
+}
+
 export interface User {
   id: number;
   Email: string;
@@ -10,6 +23,7 @@ export interface User {
   MobilePhone: number;
   InternalPhone: number;
 }
+
 export interface Post {
   id: number;
   Title: string;

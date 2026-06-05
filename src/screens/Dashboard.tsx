@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {getFromEndpoint} from "../utilities/helpers"
+import {getFromEndpoint} from "../helpers.tsx"
 import type {User} from "../models.tsx"
 
 export function Dashboard(){

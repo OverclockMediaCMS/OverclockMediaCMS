@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Post } from "../models";
-import { getFromEndpoint } from "../utilities/helpers";
-import {PostLimitedDisplay } from "../utilities/postComponents";
+import { getFromEndpoint } from "../helpers";
+import {PostLimitedDisplay } from "../components/postComponents";
 import "../style/post.css"
 import { useNavigate } from "react-router-dom";
 
