@@ -32,8 +32,8 @@ export default function App(){
   return(
     <BrowserRouter>
     <Layout>
-      <div className="app">
-      <div className="content">
+      <div>
+      <div>
       <Routes>
         <Route path="/" element={<Login/>}/>
         <Route element={<WithNavBar/>}>
@@ -59,8 +59,12 @@ export default function App(){
 function WithNavBar(){
   return(
     <>
+    <div className="app">
       <Navbar/>
+    <div className="content">
       <Outlet/>
+    </div>
+    </div>
     </>
   )
 }

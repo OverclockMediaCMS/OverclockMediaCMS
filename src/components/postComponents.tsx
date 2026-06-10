@@ -29,7 +29,7 @@ export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, Us
   )
 }
 
-export const PostDetailedDisplay: FC<Post> = ({ id, Title, Body, User, Tags, Comments }) => {
+export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags, Comments }) => {
   const [newComment, setNewComment] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>(Comments);
@@ -37,14 +37,17 @@ export const PostDetailedDisplay: FC<Post> = ({ id, Title, Body, User, Tags, Com
   const context = useGlobalContext();
   
   async function refreshComments(){
-    let c = await getFromEndpoint(`comments/${id}`);
+    const postid = Id;
+    const response = await getFromEndpoint(`comments/${postid}`, null);
+    const body = await response.json();
+    const c : Array<Comment> = body;
     setComments(c);
   }
   async function createComment(){
     let c : CreateComment = {
       UserId: context!.user!.id,
       Description: commentText,
-      PostId: id
+      PostId: Id
     }
     await postToEndpoint("comment", c);
     setNewComment(false);
@@ -53,7 +56,7 @@ export const PostDetailedDisplay: FC<Post> = ({ id, Title, Body, User, Tags, Com
   }
   
   return (
-    <div className='postDetalied'>
+    <div className='postDetailed'>
       <h1>{Title}</h1>
       <h2>Written by {User.FirstName}</h2>
       <ul> {Tags.map((tag) => (

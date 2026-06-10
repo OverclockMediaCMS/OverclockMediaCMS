@@ -14,20 +14,19 @@ export function Login(){
 
   async function submit(){
     const u : LoginUser = {
-      Email: email,
-      Password: password,
+      Email:email,
+      Password:password,
     }
-    const reply = await postToEndpoint("users/login", u); 
-    if(reply.status == 200){
-      console.log("success")
+    const response = await postToEndpoint("users/login", u); 
+    const body = await response.json();
+    if(response.status == 200){
+      const user : User = body;
+      context?.setUser(user);
+      navigate("/Dashboard");
+    }else{
+      window.alert(body.error);
     }
-
-    // if(success){
-    //   context?.setUser(user);
-    //   navigate("/Dashboard");
-    // }else{
-    //   window.alert(reply.error);
-    // }
+ 
   }
 
   useEffect (() => {

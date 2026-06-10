@@ -1,16 +1,16 @@
-
-export async function getFromEndpoint(endpoint : string) : Promise<any> {
-  const url = "http://localhost:3000/" + endpoint;
+/** 
+ * pass the endpoint and query otherwise pass null
+ **/
+export async function getFromEndpoint(endpoint : string, query : any) : Promise<any> {
+  const url = new URL("http://localhost:3000/" + endpoint);
+  if(query !== null){
+    url.search = new URLSearchParams(query).toString();
+  }
   try {
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
+    return response;
   } catch (error) {
-    return null
+    console.error("getFromEndPoint error: ", error);
   }
 }
 
@@ -24,12 +24,8 @@ export async function postToEndpoint(endpoint : string, obj : object) : Promise<
       },
       body: JSON.stringify(obj)
     });
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-    const result = response.json();
-    return result;
+    return response;
   } catch (error) {
-    return null
+    console.error("postToEndPoint error: ", error);
   }
 }
