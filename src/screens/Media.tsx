@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
 import type { Media } from "../models";
-import { getFromEndpoint } from "../utilities/helpers";
-import { MediaLimitedDisplay } from "../utilities/mediaComponents";
+import { getFromEndpoint } from "../helpers";
+import { MediaLimitedDisplay } from "../components/mediaComponents";
 import '../style/media.css'
 
 export function Media(){
     const [media, setMedia] = useState<Array<Media>>([]);
     const [query, setQuery] = useState("");
-    const fetchData = async (contains : string) => {
-      let u = await getFromEndpoint(`media/${contains}`);
-      let media: Array<Media> = u;
-      setMedia(media);
-    }
     
+  const fetchData = async (searchParams : string | null) => {
+    let response;
+    if(searchParams !== null){
+      const query = {contains : searchParams}
+      response = await getFromEndpoint("media", query);
+    }else{
+      response = await getFromEndpoint("media", null);
+    }
+    const body = await response.json();
+    const media: Array<Media> = body;
+    setMedia(media);
+  }
     useEffect(() => {
       fetchData("");
     }, []);

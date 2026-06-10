@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Post } from "../models";
-import { getFromEndpoint } from "../utilities/helpers";
-import {PostLimitedDisplay } from "../utilities/postComponents";
+import { getFromEndpoint } from "../helpers";
+import {PostLimitedDisplay } from "../components/postComponents";
 import "../style/post.css"
 import { useNavigate } from "react-router-dom";
 
@@ -11,13 +11,20 @@ export function Posts() {
   const [query, setQuery] = useState("");
   const [selectedPostId, setSelectedPostId] = useState(-1);
 
-  const fetchData = async (contains : string) => {
-    let u = await getFromEndpoint(`posts/${contains}`);
-    let posts: Array<Post> = u;
+  const fetchData = async (searchParams : string | null) => {
+    let response;
+    if(searchParams !== null){
+      const query = {contains : searchParams}
+      response = await getFromEndpoint("posts", query);
+    }else{
+      response = await getFromEndpoint("posts", null);
+    }
+    const body = await response.json();
+    const posts: Array<Post> = body;
     setPosts(posts);
   }
   useEffect(() => {
-    fetchData("");
+    fetchData(null);
   }, []);
   useEffect(() => {
     if(selectedPostId != -1){

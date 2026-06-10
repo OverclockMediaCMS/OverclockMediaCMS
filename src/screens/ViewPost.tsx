@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import type {Post} from '../models'
-import { getFromEndpoint } from "../utilities/helpers";
-import { PostDetailedDisplay } from "../utilities/postComponents";
+import { getFromEndpoint } from "../helpers";
+import { PostDetailedDisplay } from "../components/postComponents";
 import { useParams } from "react-router-dom";
 
 export function ViewPost(){
   const [thisPost, setThisPost] = useState<Post | null>(null)
-  const {id} = useParams();
+  const {id: thisId} = useParams();
   const fetchPost = async () => {
-    let p = await getFromEndpoint(`postsbyid/${id}`);
-    let post: Post = p;
-    setThisPost(p);
+    const query = {id:thisId}
+    let response = await getFromEndpoint("posts", query);
+    let body = await response.json();
+    let post: Post = body;
+    setThisPost(post);
   }
   useEffect(() => {
     fetchPost();
-  }, [id])
+  }, [thisId])
   if(thisPost == null) return null;
 
   return(

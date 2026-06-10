@@ -22,8 +22,27 @@
     align-items: center;
 }
 .postDetailed {
-    margin: 10vh;
-    width: 100%;
+    margin: 5vh;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 10vh);
+    align-items: left;
+}
+.postDetailedHeader {
+    flex-direction: column;
+    align-self: center;
+    border: 2px solid black;
+}
+.postDetailedBody {
+    border: 1px solid black;
+    margin-top: 10px;
+    padding: 20px;
+}
+.addCommentButton {
+    margin-top: 20px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
 }
 .commentIcon {
     display: flex;
@@ -32,6 +51,7 @@
     width: 5vh;
 }
 .postDetailedComment {
+    margin-top: 2vh;
     display: flex;
     flex-direction: column;
     border : 1px solid black;
