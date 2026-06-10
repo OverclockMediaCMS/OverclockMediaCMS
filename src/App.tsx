@@ -4,6 +4,7 @@ import { Settings } from "./screens/Settings";
 import  Profile from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
+import { CreatePost } from "./screens/CreatePost";
 import Layout  from "./components/Layout"; // import Header Layout - Sirawit
 import { ViewPost } from "./screens/ViewPost";
 import { Navbar } from "./utilities/navbar";
@@ -37,6 +38,7 @@ export default function App(){
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/Settings" element={<Settings/>}/>
         <Route path="/Media" element={<Media/>}/>
+        <Route path="/CreatePost" element={<CreatePost/>}/>
         <Route path="/Posts" element={<Posts/>}/>
         <Route path="/ViewPost/:id" element={<ViewPost/>}/>
       </Routes>
