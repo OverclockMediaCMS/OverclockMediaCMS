@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { postToEndpoint } from "../utilities/helpers";
+import { postToEndpoint } from "../helpers";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 import "../style/post.css"
