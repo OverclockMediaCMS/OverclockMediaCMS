@@ -32,34 +32,45 @@ const Profile = () => {
 
   //Fetch DATA
   useEffect(() => {
-    const currentUserId = user ? user.id : 1;
-
-    fetch(`${API_URL}/users/${currentUserId}`)
-      .then(res => {
-        if (!res.ok) throw new Error("Couldn't fetch user data");
-        return res.json();
-      })
-      .then(data => {
-        setProfileForm({
-          FirstName: data.FirstName || '',
-          LastName: data.LastName || '',
-          Role: data.Role || 'Operator',
-          Email: data.Email || '',
-          MobilePhone: data.MobilePhone?.toString() || '-',
-          InternalPhone: data.InternalPhone?.toString() || '-'
-        });
-
-        if (!user) {
-          setUser(data);
-        }
-
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Cannot connect to backend:", err);
-        setLoading(false);
+    if (user) {
+      setProfileForm({
+        FirstName: user.FirstName || '',
+        LastName: user.LastName || '',
+        Role: user.Role || '',
+        Email: user.Email || '',
+        MobilePhone: user.MobilePhone?.toString() || '-',
+        InternalPhone: user.InternalPhone?.toString() || '-'
       });
-  }, [user, setUser]);
+      setLoading(false);
+    } else {
+      
+      fetch(`${API_URL}/users/1`)
+        .then(res => {
+          if (!res.ok) throw new Error("Couldn't fetch user data");
+          return res.json();
+        })
+        .then(data => {
+          const userData = data?.response || data;
+
+          setProfileForm({
+            FirstName: userData.FirstName || '',
+            LastName: userData.LastName || '',
+            Role: userData.Role || '',
+            Email: userData.Email || '',
+            MobilePhone: userData.MobilePhone?.toString() || '-',
+            InternalPhone: userData.InternalPhone?.toString() || '-'
+          });
+
+          setUser(userData);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error("Cannot connect to backend:", err);
+          setLoading(false);
+        });
+    }
+  }, []);
+
 
   //Hangle typing changes in real-time
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,9 +98,10 @@ const Profile = () => {
 
         if (!response.ok) throw new Error("Update to db failed");
 
-        const updatedData = await response.json();
-        setUser(updatedData);
+        const data = await response.json();
+        const updatedUser = data?.response || data;
 
+        setUser(updatedUser);
         setIsEditing(false);
       } catch (error) {
         alert("Failed to save changes");
@@ -99,7 +111,7 @@ const Profile = () => {
     }
   };
 
-  if(loading) return <div className='container'><main className='mainContent'>Connecting to context...</main></div>;
+  if (loading) return <div className='container'><main className='mainContent'>Connecting to context...</main></div>;
 
   return (
     <div className='container'>
@@ -137,7 +149,7 @@ const Profile = () => {
             <div className='row'>
               <span>Lastname:</span>
               {isEditing ? (
-                <input name="Lastname" value={profileForm.LastName} onChange={handleChange} />
+                <input name="LastName" value={profileForm.LastName} onChange={handleChange} />
               ) : (
                 <span>{profileForm.LastName}</span>
               )}
