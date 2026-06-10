@@ -20,13 +20,12 @@ export function Register(){
       Email: email,
       Password: password,
     }
-    const reply = await postToEndpoint("users/register", u);
-    const {success} = reply.success;
-
-    if(success){
+    const response = await postToEndpoint("users/register", u);
+    if(response.status == 200){
       navigate("/Login");
     }else{
-      window.alert(reply.error);
+      const body = await response.json();
+      window.alert(body);
     }
   }
 
