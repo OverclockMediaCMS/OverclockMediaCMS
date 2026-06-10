@@ -6,6 +6,7 @@ import plusIcon from "../assets/plus.png"
 import "../style/post.css"
 import { useGlobalContext } from "../GlobalContext";
 import { getFromEndpoint, postToEndpoint } from "../helpers";
+import ReactMarkdown from 'react-markdown'
 //generic element for displaying post, takes post model as interface
 
 export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, User, Tags, Comments, Date : rawDate, onClick }) => {
@@ -29,13 +30,16 @@ export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, Us
   )
 }
 
-export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags, Comments }) => {
+export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags, Comments, Date : rawDate }) => {
   const [newComment, setNewComment] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>(Comments);
-
   const context = useGlobalContext();
-  
+  const dateValue = new Date(rawDate).toLocaleDateString([], 
+  {
+      hour: '2-digit', minute: '2-digit', year: "2-digit", month: "2-digit", day: '2-digit'
+  });
+
   async function refreshComments(){
     const postid = Id;
     const response = await getFromEndpoint(`comments/${postid}`, null);
@@ -43,6 +47,7 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
     const c : Array<Comment> = body;
     setComments(c);
   }
+
   async function createComment(){
     let c : CreateComment = {
       UserId: context!.user!.id,
@@ -57,14 +62,18 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
   
   return (
     <div className='postDetailed'>
-      <h1>{Title}</h1>
-      <h2>Written by {User.FirstName}</h2>
-      <ul> {Tags.map((tag) => (
-        <p key={tag.id}> Tags: {tag.Title}</p>
-      ))}
-      </ul>
-      <p>{Body}</p>
-      <label style={{display: 'flex', flexDirection: 'row'}} onClick={ () => {setNewComment(!newComment)}}>
+      <div className="postDetailedHeader">
+        <h1>{Title}</h1>
+        <h2>By {User.FirstName} {User.LastName} on {dateValue}</h2>
+        <ul> {Tags.map((tag) => (
+          <p key={tag.id}> Tags: {tag.Title}</p>
+        ))}
+        </ul>
+      </div>
+      <div className="postDetailedBody">
+      <ReactMarkdown>{Body}</ReactMarkdown>
+      </div>
+      <label className="addCommentButton" onClick={ () => {setNewComment(!newComment)}}>
         <img src={plusIcon} className="commentIcon"></img>
         <text style={{fontSize: '3vh'}}>Add Comment</text>
       </label>

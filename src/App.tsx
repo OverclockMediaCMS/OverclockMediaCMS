@@ -1,4 +1,4 @@
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import { Dashboard } from "./screens/Dashboard";
 import { Settings } from "./screens/Settings";
 import  Profile from "./screens/Profile";
@@ -18,17 +18,6 @@ import { Login } from "./screens/Login";
 export default function App(){
   const context = useGlobalContext();
 
-  async function setUserById(id:number) {
-    let u = await getFromEndpoint(`users/${id}`);
-    let newUser : User = u;
-    if(u != undefined){
-      context?.setUser(newUser);
-    }
-  }
-  useEffect( () => {
-    setUserById(1);
-  }, [])
-
   return(
     <BrowserRouter>
     <Layout>
@@ -36,13 +25,15 @@ export default function App(){
       <div>
       <Routes>
         <Route path="/" element={<Login/>}/>
-        <Route element={<WithNavBar/>}>
-          <Route path="/Dashboard" element={<Dashboard/>}/>
-          <Route path="/Profile" element={<Profile/>}/>
-          <Route path="/Settings" element={<Settings/>}/>
-          <Route path="/Media" element={<Media/>}/>
-          <Route path="/Posts" element={<Posts/>}/>
-          <Route path="/ViewPost/:id" element={<ViewPost/>}/>
+        <Route element={<MustBeLoggedIn/>}>
+          <Route element={<WithNavBar/>}>
+            <Route path="/Dashboard" element={<Dashboard/>}/>
+            <Route path="/Profile" element={<Profile/>}/>
+            <Route path="/Settings" element={<Settings/>}/>
+            <Route path="/Media" element={<Media/>}/>
+            <Route path="/Posts" element={<Posts/>}/>
+            <Route path="/ViewPost/:id" element={<ViewPost/>}/>
+          </Route>
         </Route>
         <Route element={<WithoutNavBar/>}>
           <Route path="/Register" element={<Register/>}/>
@@ -56,6 +47,18 @@ export default function App(){
   )
 }
 
+// uncomment body of function to enforce must be logged in 
+
+function MustBeLoggedIn(){
+  const context = useGlobalContext();
+
+  // if(!context?.user){
+  //   return <Navigate to="/Login" replace />
+  // }
+  
+  return <Outlet/>
+
+}
 function WithNavBar(){
   return(
     <>
