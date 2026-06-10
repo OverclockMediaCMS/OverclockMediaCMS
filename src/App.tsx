@@ -4,6 +4,7 @@ import { Settings } from "./screens/Settings";
 import  Profile from "./screens/Profile";
 import { Posts } from "./screens/Posts";
 import { Media } from "./screens/Media";
+import { CreatePost } from "./screens/CreatePost";
 import Layout  from "./components/Layout"; // import Header Layout - Sirawit
 import { ViewPost } from "./screens/ViewPost";
 import { Navbar } from "./components/Navbar";

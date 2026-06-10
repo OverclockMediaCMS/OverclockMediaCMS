@@ -1,5 +1,9 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { postToEndpoint } from "../helpers";
+import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../GlobalContext";
+import "../style/post.css"
 
 // Define the shape of each preview item that will be stored in state.
 type PreviewFile = {
@@ -11,8 +15,23 @@ type PreviewFile = {
 };
 
 export function CreatePost() {
+  const context = useGlobalContext();
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [isDraft, setIsDraft] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   // State used to store all selected media files for preview.
   const [previews, setPreviews] = useState<PreviewFile[]>([]);
+
+  useEffect(() => {
+    return () => {
+      previews.forEach((file) => URL.revokeObjectURL(file.url));
+    };
+  }, [previews]);
 
   // Runs whenever the user selects files.
   function handleFiles(event: React.ChangeEvent<HTMLInputElement>) {
@@ -49,6 +68,37 @@ export function CreatePost() {
     setPreviews(mediaFiles);
   }
 
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!context?.user) {
+      setErrorMessage("A user must be loaded before creating a post.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMessage("");
+
+    const post = {
+      Title: title,
+      Body: body,
+      isDraft: isDraft,
+      Date: new Date().toISOString(),
+      UserId: context.user.id,
+    };
+
+    const createdPost = await postToEndpoint("posts/create", post);
+
+    setIsSubmitting(false);
+
+    if (!createdPost) {
+      setErrorMessage("Could not create the post.");
+      return;
+    }
+
+    navigate(`/ViewPost/${createdPost.id}`);
+  }
+
   return (
     <div>
       {/* Form heading */}
@@ -56,10 +106,8 @@ export function CreatePost() {
 
       {/* Form for creating a new post */}
       <form
-        encType="multipart/form-data"
-        method="post"
         name="fileinfo"
-        id="fileinfo"
+        onSubmit={handleSubmit}
       >
         {/* Title input */}
         <p>
@@ -67,10 +115,13 @@ export function CreatePost() {
             Title
             <input
               type="text"
+              name="Title"
               placeholder="Enter title (required)"
               required
               size={32}
               maxLength={64}
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
             />
           </label>
         </p>
@@ -147,17 +198,37 @@ export function CreatePost() {
 
           <textarea
             id="Post"
-            name="Post"
+            name="Body"
             placeholder="Write a Post (required)"
             required
             rows={4}
             maxLength={2000}
+            value={body}
+            onChange={(event) => setBody(event.target.value)}
           />
         </div>
 
+        <p>
+          <label>
+            Save as draft
+            <input
+              type="checkbox"
+              name="isDraft"
+              checked={isDraft}
+              onChange={(event) => setIsDraft(event.target.checked)}
+            />
+          </label>
+        </p>
+
+        {errorMessage && <p>{errorMessage}</p>}
+
         {/* Submit button */}
         <p>
-          <input type="submit" value="Publish" />
+          <input
+            type="submit"
+            value={isDraft ? "Save Draft" : "Publish"}
+            disabled={isSubmitting}
+          />
         </p>
       </form>
     </div>
