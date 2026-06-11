@@ -56,3 +56,7 @@ export interface CreateComment {
 export interface Theme {
   Darkmode: boolean;
 }
+export interface TOCItem {
+  name : string;
+  type : number;
+}

@@ -56,3 +56,9 @@
     flex-direction: column;
     border : 1px solid black;
 }
+.postDetailedTOC {
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    border : 1px solid black;
+}

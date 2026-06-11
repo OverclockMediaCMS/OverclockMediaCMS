@@ -1,5 +1,5 @@
 import { useEffect, useState, type FC } from "react";
-import type { CreateComment, Post } from "../models";
+import type { CreateComment, Post, TOCItem } from "../models";
 import type { Comment } from "../models";
 import commentIcon from "../assets/comment.png";
 import plusIcon from "../assets/plus.png";
@@ -34,7 +34,10 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
   const [newComment, setNewComment] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>(Comments);
+  const [tableOfContents, setTableOfContents] = useState<TOCItem[]>([]);
+
   const context = useGlobalContext();
+
   const dateValue = new Date(rawDate).toLocaleDateString([], 
   {
       hour: '2-digit', minute: '2-digit', year: "2-digit", month: "2-digit", day: '2-digit'
@@ -49,17 +52,47 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
   }
 
   async function createComment(){
+    if(!context!.user){
+      window.alert("no user logged in to send comment!");
+      return;
+    }
     let c : CreateComment = {
       UserId: context!.user!.id,
       Description: commentText,
       PostId: Id
     }
-    await postToEndpoint("comment", c);
-    setNewComment(false);
-    setCommentText("");
-    refreshComments();
+    let response = await postToEndpoint("comment", c);
+    if(response.status != 200){
+      let body = response.json();
+      window.alert(body.error);
+    }else{
+      setNewComment(false);
+      setCommentText("");
+      refreshComments();
+    }
   }
-  
+
+  function createTableOfContents(text: string){
+    const lines = text.split("\n");
+    let items : Array<TOCItem> = [];
+    
+    for(let line of lines){
+      if(line.startsWith("###")){
+        let l = line.substring(3);
+        items.push({name:l, type: 3});
+      }
+      else if(line.startsWith("##")){
+        let l = line.substring(2);
+        items.push({name:l, type: 2});
+      }
+    }
+    setTableOfContents(items);
+  }
+
+  useEffect(() => {
+    createTableOfContents(Body);
+  }, []);
+
   return (
     <div className='postDetailed'>
       <div className="postDetailedHeader">
@@ -70,8 +103,17 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
         ))}
         </ul>
       </div>
+      <div className="postDetailedTOC">
+        <h2>Table of Contents</h2>
+        <ul> {tableOfContents.map((item) => (
+          item.type == 2 
+          ? <div style={{fontWeight: 'bold' }}>{item.name}</div>
+          : <div style={{fontStyle: 'italic'}}>{item.name}</div>
+        ))}
+        </ul>
+      </div>
       <div className="postDetailedBody">
-      <ReactMarkdown>{Body}</ReactMarkdown>
+        <ReactMarkdown>{Body}</ReactMarkdown>
       </div>
       <label className="addCommentButton" onClick={ () => {setNewComment(!newComment)}}>
         <img src={plusIcon} className="commentIcon"></img>
