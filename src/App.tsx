@@ -14,6 +14,7 @@ import type { User } from "./models";
 import { useEffect } from "react";
 import { Register } from "./screens/Register";
 import { Login } from "./screens/Login";
+import { GeneralSetting } from "./screens/GeneralSetting";
 
 export default function App(){
   const context = useGlobalContext();
@@ -32,6 +33,7 @@ export default function App(){
             <Route path="/Settings" element={<Settings/>}/>
             <Route path="/Media" element={<Media/>}/>
             <Route path="/Posts" element={<Posts/>}/>
+            <Route path="/settings/general" element={<GeneralSetting/>}/>
             <Route path="/ViewPost/:id" element={<ViewPost/>}/>
           </Route>
         </Route>

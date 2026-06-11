@@ -22,7 +22,9 @@ const Profile = () => {
     Role: '',
     Email: '',
     MobilePhone: '',
-    InternalPhone: ''
+    InternalPhone: '',
+    postCount: 0,
+    mediaCount: 0
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -33,17 +35,35 @@ const Profile = () => {
   //Fetch DATA
   useEffect(() => {
     if (user) {
-      setProfileForm({
-        FirstName: user.FirstName || '',
-        LastName: user.LastName || '',
-        Role: user.Role || '',
-        Email: user.Email || '',
-        MobilePhone: user.MobilePhone?.toString() || '-',
-        InternalPhone: user.InternalPhone?.toString() || '-'
-      });
+      fetch(`${API_URL}/users/${user.id}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Couldn't fetch user data");
+          return res.json();
+        })
+        .then(data => {
+          const userData = data?.response || data;
+
+          setProfileForm({
+            FirstName: userData.FirstName || '',
+            LastName: userData.LastName || '',
+            Role: userData.Role || '',
+            Email: userData.Email || '',
+            MobilePhone: userData.MobilePhone?.toString() || '-',
+            InternalPhone: userData.InternalPhone?.toString() || '-',
+            postCount: user!.postCount || 0,
+            mediaCount: user!.mediaCount || 0
+          });
+
+          setUser(userData);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error("Cannot connect to backend:", err);
+          setLoading(false);
+        });
       setLoading(false);
     } else {
-      
+
       fetch(`${API_URL}/users/1`)
         .then(res => {
           if (!res.ok) throw new Error("Couldn't fetch user data");
@@ -58,7 +78,9 @@ const Profile = () => {
             Role: userData.Role || '',
             Email: userData.Email || '',
             MobilePhone: userData.MobilePhone?.toString() || '-',
-            InternalPhone: userData.InternalPhone?.toString() || '-'
+            InternalPhone: userData.InternalPhone?.toString() || '-',
+            postCount: user!.postCount || 0,
+            mediaCount: user!.mediaCount || 0
           });
 
           setUser(userData);
@@ -162,8 +184,8 @@ const Profile = () => {
                 <span>{profileForm.Role}</span>
               )}
             </div>
-            <div className='row'><span>Number of Post:</span><span>20</span></div>
-            <div className='row'><span>Media upload:</span><span>500</span></div>
+            <div className='row'><span>Number of Post:</span><span>{profileForm.postCount}</span></div>
+            <div className='row'><span>Media upload:</span><span>{profileForm.mediaCount}</span></div>
           </div>
         </section>
 

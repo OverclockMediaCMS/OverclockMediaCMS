@@ -22,6 +22,8 @@ export interface User {
   LastName: string;
   MobilePhone: number;
   InternalPhone: number;
+  postCount: number;
+  mediaCount: number;
 }
 
 export interface Post {
