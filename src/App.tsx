@@ -34,6 +34,7 @@ export default function App(){
             <Route path="/Media" element={<Media/>}/>
             <Route path="/Posts" element={<Posts/>}/>
             <Route path="/ViewPost/:id" element={<ViewPost/>}/>
+            <Route path="/CreatePost" element={<CreatePost/>}/>
           </Route>
         </Route>
         <Route element={<WithoutNavBar/>}>
