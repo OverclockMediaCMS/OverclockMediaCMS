@@ -19,7 +19,7 @@ export function CreatePost() {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [postBody, setPostBody] = useState("");
   const [isDraft, setIsDraft] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -81,20 +81,23 @@ export function CreatePost() {
 
     const post = {
       Title: title,
-      Body: body,
+      Body: postBody,
       isDraft: isDraft,
       Date: new Date().toISOString(),
       UserId: context.user.id,
     };
 
-    const createdPost = await postToEndpoint("posts/create", post);
+    const response = await postToEndpoint("posts/create", post);
 
     setIsSubmitting(false);
 
-    if (!createdPost) {
+    if (!response || response.status !== 200) {
       setErrorMessage("Could not create the post.");
       return;
     }
+
+    const body = await response.json();
+    const createdPost = body.response;
 
     navigate(`/ViewPost/${createdPost.id}`);
   }
@@ -203,8 +206,8 @@ export function CreatePost() {
             required
             rows={4}
             maxLength={2000}
-            value={body}
-            onChange={(event) => setBody(event.target.value)}
+            value={postBody}
+            onChange={(event) => setPostBody(event.target.value)}
           />
         </div>
 
