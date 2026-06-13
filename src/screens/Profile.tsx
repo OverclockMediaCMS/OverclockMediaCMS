@@ -22,7 +22,9 @@ const Profile = () => {
     Role: '',
     Email: '',
     MobilePhone: '',
-    InternalPhone: ''
+    InternalPhone: '',
+    postCount: 0,
+    mediaCount: 0
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -32,34 +34,65 @@ const Profile = () => {
 
   //Fetch DATA
   useEffect(() => {
-    const currentUserId = user ? user.id : 1;
+    if (user) {
+      fetch(`${API_URL}/users/${user.id}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Couldn't fetch user data");
+          return res.json();
+        })
+        .then(data => {
+          const userData = data?.response || data;
 
-    fetch(`${API_URL}/users/${currentUserId}`)
-      .then(res => {
-        if (!res.ok) throw new Error("Couldn't fetch user data");
-        return res.json();
-      })
-      .then(data => {
-        setProfileForm({
-          FirstName: data.FirstName || '',
-          LastName: data.LastName || '',
-          Role: data.Role || 'Operator',
-          Email: data.Email || '',
-          MobilePhone: data.MobilePhone?.toString() || '-',
-          InternalPhone: data.InternalPhone?.toString() || '-'
+          setProfileForm({
+            FirstName: userData.FirstName || '',
+            LastName: userData.LastName || '',
+            Role: userData.Role || '',
+            Email: userData.Email || '',
+            MobilePhone: userData.MobilePhone?.toString() || '-',
+            InternalPhone: userData.InternalPhone?.toString() || '-',
+            postCount: user!.postCount || 0,
+            mediaCount: user!.mediaCount || 0
+          });
+
+          setUser(userData);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error("Cannot connect to backend:", err);
+          setLoading(false);
         });
+      setLoading(false);
+    } else {
 
-        if (!user) {
-          setUser(data);
-        }
+      fetch(`${API_URL}/users/1`)
+        .then(res => {
+          if (!res.ok) throw new Error("Couldn't fetch user data");
+          return res.json();
+        })
+        .then(data => {
+          const userData = data?.response || data;
 
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Cannot connect to backend:", err);
-        setLoading(false);
-      });
-  }, [user, setUser]);
+          setProfileForm({
+            FirstName: userData.FirstName || '',
+            LastName: userData.LastName || '',
+            Role: userData.Role || '',
+            Email: userData.Email || '',
+            MobilePhone: userData.MobilePhone?.toString() || '-',
+            InternalPhone: userData.InternalPhone?.toString() || '-',
+            postCount: user!.postCount || 0,
+            mediaCount: user!.mediaCount || 0
+          });
+
+          setUser(userData);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error("Cannot connect to backend:", err);
+          setLoading(false);
+        });
+    }
+  }, []);
+
 
   //Hangle typing changes in real-time
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,9 +120,10 @@ const Profile = () => {
 
         if (!response.ok) throw new Error("Update to db failed");
 
-        const updatedData = await response.json();
-        setUser(updatedData);
+        const data = await response.json();
+        const updatedUser = data?.response || data;
 
+        setUser(updatedUser);
         setIsEditing(false);
       } catch (error) {
         alert("Failed to save changes");
@@ -99,7 +133,7 @@ const Profile = () => {
     }
   };
 
-  if(loading) return <div className='container'><main className='mainContent'>Connecting to context...</main></div>;
+  if (loading) return <div className='container'><main className='mainContent'>Connecting to context...</main></div>;
 
   return (
     <div className='container'>
@@ -137,7 +171,7 @@ const Profile = () => {
             <div className='row'>
               <span>Lastname:</span>
               {isEditing ? (
-                <input name="Lastname" value={profileForm.LastName} onChange={handleChange} />
+                <input name="LastName" value={profileForm.LastName} onChange={handleChange} />
               ) : (
                 <span>{profileForm.LastName}</span>
               )}
@@ -150,8 +184,8 @@ const Profile = () => {
                 <span>{profileForm.Role}</span>
               )}
             </div>
-            <div className='row'><span>Number of Post:</span><span>20</span></div>
-            <div className='row'><span>Media upload:</span><span>500</span></div>
+            <div className='row'><span>Number of Post:</span><span>{profileForm.postCount}</span></div>
+            <div className='row'><span>Media upload:</span><span>{profileForm.mediaCount}</span></div>
           </div>
         </section>
 
