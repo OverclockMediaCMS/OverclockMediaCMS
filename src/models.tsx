@@ -62,3 +62,10 @@ export interface TOCItem {
   name : string;
   type : number;
 }
+export interface CreatePost {
+  Title: string;
+  Body: string;
+  isDraft: boolean;
+  Date: string;
+  UserId: number;
+}

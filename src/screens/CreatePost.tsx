@@ -1,9 +1,11 @@
 
 import { useEffect, useState } from "react";
+import type { CreatePost } from "../models";
 import { postToEndpoint } from "../helpers";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 import "../style/post.css"
+
 
 // Define the shape of each preview item that will be stored in state.
 type PreviewFile = {
@@ -79,10 +81,19 @@ export function CreatePost() {
     setIsSubmitting(true);
     setErrorMessage("");
 
-    const post = {
+    // const post = {
+    //   Title: title,
+    //   Body: postBody,
+    //   isDraft: isDraft,
+    //   Date: new Date().toISOString(),
+    //   UserId: context.user.id,
+    // };
+
+
+    const post: CreatePost = {
       Title: title,
       Body: postBody,
-      isDraft: isDraft,
+      isDraft,
       Date: new Date().toISOString(),
       UserId: context.user.id,
     };
