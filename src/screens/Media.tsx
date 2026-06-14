@@ -5,41 +5,94 @@ import { MediaLimitedDisplay } from "../components/mediaComponents";
 import '../style/media.css'
 
 export function Media(){
-    const [media, setMedia] = useState<Array<Media>>([]);
-    const [query, setQuery] = useState("");
-    
-  const fetchData = async (searchParams : string | null) => {
+  const [media, setMedia] = useState<Array<Media>>([]);
+  const [query, setQuery] = useState("");
+
+  const [selectedExtension, setSelectedExtension] = useState("");
+
+  const [availableExtensions, setAvailableExtensions] = useState<Array<string>>([]);
+
+  //Initialize media data components
+  useEffect(() => {
+    fetchData("", "", true);
+  }, []);
+ 
+  const fetchData = async (searchParams : string | null, extensionFilter: string, isInitialLoad = false) => {
     let response;
-    if(searchParams !== null){
-      const query = {contains : searchParams}
-      response = await getFromEndpoint("media", query);
-    }else{
+
+    const hasSearchWord = searchParams && searchParams.trim() !== "";
+
+    if(hasSearchWord || extensionFilter !== ""){
+      const queryObj: any = {};
+      if(hasSearchWord) queryObj.contains = searchParams;
+      if(extensionFilter !== "") queryObj.fileExtension = extensionFilter;
+
+      response = await getFromEndpoint("media", queryObj);
+    } else {
       response = await getFromEndpoint("media", null);
     }
+
     const body = await response.json();
-    const media: Array<Media> = body;
-    setMedia(media);
+    const fetchedMedia = Array.isArray(body) ? body : body ? [body] : [];
+    setMedia(fetchedMedia);
+
+    if(isInitialLoad && fetchedMedia.length > 0){
+      const allExtensions = fetchedMedia.map(m => m.FileExtension.toLowerCase());
+      setAvailableExtensions(Array.from(new Set(allExtensions)));
+    }
+  };
+  
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchData(query, selectedExtension);
   }
-    useEffect(() => {
-      fetchData("");
-    }, []);
-  return(
+
+  return (
     <div>
       <h1>Media</h1>
-      <label>
-        <input type="text" value={query} onChange= { (e) => {setQuery(e.target.value)}}></input>
-        <button onClick={(e) => {fetchData(query)}}>Search</button>
-      </label>
-      <div className="mediaList"> {media.map((media) => (
-              <MediaLimitedDisplay key={media.id}
-                id={media.id}
-                Title={media.Title}
-                User={media.User}
-                FileExtension={media.FileExtension}
-                FilePath={media.FilePath}
-                Date={media.Date}
-              />))}
+
+      <form onSubmit={handleSearchSubmit} className="search-form">
+        <select
+          value={selectedExtension}
+          onChange={(e) => setSelectedExtension(e.target.value)}
+          className="dropdown"
+        >
+          <option value="">All File Types</option>
+          {availableExtensions.map((ext) => (
+            <option key={ext} value={ext}>
+              .{ext.toUpperCase()}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="text"
+          placeholder="Search media titles..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+
+        <button type="submit">Search</button>
+      </form>
+
+      <div className="mediaList">
+        {media.length > 0 ? (
+          media.map((item) => (
+            <MediaLimitedDisplay 
+              key={item.id}
+              id={item.id}
+              Title={item.Title}
+              FileExtension={item.FileExtension}
+              FilePath={item.FilePath}
+              Date={item.Date}
+              User={item.User}
+            />
+          ))
+        ) : (
+          <p>No media resources matched your filter choices.</p>
+        )}
       </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../style/settings.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../GlobalContext';
 
 interface SettingItemProps {
@@ -14,9 +14,6 @@ const SettingItem: React.FC<SettingItemProps> = ({ title, subtext }) => (
     <p className="subtext">{subtext}</p>
   </div>
 );
-
-
-
 
 
 export function Settings() {
@@ -69,14 +66,24 @@ export function Settings() {
     }
   }, [user, setUser]);
 
+
+
   const fullName = `${profile.FirstName} ${profile.LastName}` || "No name"
+
+  const navigate = useNavigate();
+  const handleLogout = (e: React.MouseEvent) => {
+    setUser(null);
+    navigate("/");
+  }
+
+
   return (
     <main className='settingsContainer'>
 
       {/* Account Section */}
       <section className='settingsGroup'>
         <h2 className='groupTitle'>Account</h2>
-        <Link to="/Profile">
+        <Link to="/Profile" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className='settingsCard'>
             <div className='profileInfo'>
               <div className='avatarPlaceholder'>
@@ -112,11 +119,10 @@ export function Settings() {
 
       {/* Content Section */}
       <section className='settingsGroup'>
-        <h2 className='groupTitle'>Content</h2>
-        <div className='settingsCard'>
+        <h2 className='groupTitle'>Privacy</h2>
+        <div className='settingsCard' onClick={handleLogout}>
           <div className='textDetails'>
-            <SettingItem title="Tags" subtext="Manage your tags" />
-            <SettingItem title="Categories" subtext="Manage your categories" />
+            <SettingItem title="Logout" subtext="Log out from current session" />
           </div>
           <span className='chevron'></span>
         </div>
