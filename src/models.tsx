@@ -66,6 +66,5 @@ export interface CreatePost {
   Title: string;
   Body: string;
   isDraft: boolean;
-  Date: string;
   UserId: number;
 }

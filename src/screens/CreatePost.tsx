@@ -70,15 +70,16 @@ export function CreatePost() {
     setPreviews(mediaFiles);
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  //async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit() {
+    //event.preventDefault();
 
     if (!context?.user) {
       setErrorMessage("A user must be loaded before creating a post.");
       return;
     }
 
-    setIsSubmitting(true);
+    //setIsSubmitting(true);
     setErrorMessage("");
 
     // const post = {
@@ -90,25 +91,28 @@ export function CreatePost() {
     // };
 
 
-    const post: CreatePost = {
+    let post: CreatePost = {
       Title: title,
       Body: postBody,
       isDraft,
-      Date: new Date().toISOString(),
       UserId: context.user.id,
     };
 
-    const response = await postToEndpoint("posts/create", post);
+    let response = await postToEndpoint("posts/create", post);
 
-    setIsSubmitting(false);
+    //setIsSubmitting(false);
 
-    if (!response || response.status !== 200) {
+    if (!response || response.status != 200) {
+
+      let body = response.json();
+      window.alert(body.error);
+
       setErrorMessage("Could not create the post.");
       return;
-    }
+    } else {setIsSubmitting(false);}
 
-    const body = await response.json();
-    const createdPost = body.response;
+    let body = await response.json();
+    let createdPost = body.response;
 
     navigate(`/ViewPost/${createdPost.id}`);
   }
