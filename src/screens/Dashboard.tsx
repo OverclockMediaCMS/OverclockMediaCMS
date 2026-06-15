@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {getFromEndpoint} from "../helpers.tsx"
+import {useApi} from "../utilities/useApi.tsx"
 import type {Media, Post, User} from "../models.tsx"
 import { PostLimitedDisplay } from "../components/postComponents.tsx";
 import { MediaLimitedDisplay} from "../components/mediaComponents.tsx";
@@ -9,6 +9,7 @@ import '../style/dashboard.css'
 import { useNavigate } from "react-router-dom";
 
 export function Dashboard(){
+  const {getFromEndpoint} = useApi();
   const [posts, setPosts] = useState<Array<Post>>([]);
   const [media, setMedia] = useState<Array<Media>>([]);
   const [selectedPostId, setSelectedPostId] = useState(-1);

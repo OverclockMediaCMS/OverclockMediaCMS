@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import {postToEndpoint} from "../helpers.tsx"
+import {useApi} from "../utilities/useApi.tsx"
 import type {User, CreateUser} from "../models.tsx"
 import { useNavigate} from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext.tsx";
 
 export function Register(){
-  
+  const {postToEndpoint} = useApi();
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");

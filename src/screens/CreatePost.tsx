@@ -1,7 +1,7 @@
 import  ReactMarkdown  from 'react-markdown';
 import { useEffect, useState } from "react";
 import type { CreatePost } from "../models";
-import { postToEndpoint } from "../helpers";
+import { useApi } from "../utilities/useApi";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 import "../style/post.css"
@@ -18,6 +18,7 @@ type PreviewFile = {
 };
 
 export function CreatePost() {
+  const {postToEndpoint} = useApi();
   const context = useGlobalContext();
   const navigate = useNavigate();
 

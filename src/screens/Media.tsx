@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import type { Media } from "../models";
-import { getFromEndpoint } from "../helpers";
+import { useApi } from "../utilities/useApi";
 import { MediaLimitedDisplay } from "../components/mediaComponents";
 import '../style/media.css'
 
 export function Media(){
+  const {getFromEndpoint} = useApi();
   const [media, setMedia] = useState<Array<Media>>([]);
   const [query, setQuery] = useState("");
 

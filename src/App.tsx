@@ -10,9 +10,6 @@ import { ViewPost } from "./screens/ViewPost";
 import { Navbar } from "./components/Navbar";
 import './style/app.css'
 import { useGlobalContext } from "./GlobalContext";
-import { getFromEndpoint } from "./helpers";
-import type { User } from "./models";
-import { useEffect } from "react";
 import { Register } from "./screens/Register";
 import { Login } from "./screens/Login";
 import { GeneralSetting } from "./screens/GeneralSetting";

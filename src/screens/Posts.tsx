@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Post } from "../models";
-import { getFromEndpoint } from "../helpers";
+import { useApi } from "../utilities/useApi";
 import { PostLimitedDisplay } from "../components/postComponents";
 import "../style/post.css"
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ interface Tag {
 }
 
 export function Posts() {
+  const {getFromEndpoint} = useApi();
   const navigate = useNavigate();
   const [posts, setPosts] = useState<Array<Post>>([]);
 

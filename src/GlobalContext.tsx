@@ -4,6 +4,8 @@ import type { Theme, User } from "./models";
 interface Globals {
     user: User | null;
     theme: Theme | null;
+    jwt : string | null;
+    setJwt : (j : string | null) => void;
     setUser : (u : User | null) => void;
     setTheme : (t : Theme | null) => void;
 }
@@ -13,9 +15,10 @@ const GlobalContext = createContext<Globals | null>(null);
 export const GlobalsProvider : FC<{children : JSX.Element}> = ({children}) => {
     const [user, setUser] = useState<User | null>(null);
     const [theme, setTheme] = useState<Theme | null>(null);
+    const [jwt, setJwt] = useState<string| null>(null);
 
     return (
-        <GlobalContext value={{user, setUser, theme, setTheme}}>
+        <GlobalContext value={{user, setUser, theme, setTheme, jwt, setJwt}}>
             {children}
         </GlobalContext>
     );

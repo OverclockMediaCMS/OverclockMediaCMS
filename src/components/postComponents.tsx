@@ -5,7 +5,7 @@ import commentIcon from "../assets/comment.png";
 import plusIcon from "../assets/plus.png";
 import "../style/post.css";
 import { useGlobalContext } from "../GlobalContext";
-import { getFromEndpoint, postToEndpoint } from "../helpers";
+import { useApi} from "../utilities/useApi";
 import  ReactMarkdown  from 'react-markdown';
 //generic element for displaying post, takes post model as interface
 
@@ -31,6 +31,7 @@ export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, Us
 }
 
 export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags, Comments, Date : rawDate }) => {
+  const {getFromEndpoint, postToEndpoint} = useApi();
   const [newComment, setNewComment] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>(Comments);
