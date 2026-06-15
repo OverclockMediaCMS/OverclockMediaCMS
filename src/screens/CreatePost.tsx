@@ -1,10 +1,11 @@
-
+import  ReactMarkdown  from 'react-markdown';
 import { useEffect, useState } from "react";
 import type { CreatePost } from "../models";
 import { postToEndpoint } from "../helpers";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 import "../style/post.css"
+import Markdown from 'react-markdown';
 
 
 // Define the shape of each preview item that will be stored in state.
@@ -249,6 +250,11 @@ export function CreatePost() {
           />
         </p>
       </form>
+        <h2 style={{display: 'flex',justifyContent: 'center'}}>Preview</h2>
+      <div style={{padding: '10px', border: '1px solid black'}}>
+        <Markdown>{postBody}</Markdown>
+      </div>
     </div>
+      
   );
 }
