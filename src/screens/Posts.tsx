@@ -86,25 +86,26 @@ export function Posts() {
         />
         <button type="submit">Search</button>
       </form>
-
-      <div className="postList">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <PostLimitedDisplay key={post.id}
-              id={post.id}
-              Title={post.Title}
-              Body={post.Body}
-              User={post.User}
-              isDraft={post.isDraft}
-              Tags={post.Tags}
-              Date={post.Date}
-              Comments={post.Comments}
-              onClick={() => { setSelectedPostId(post.id) }}
-            />
-          ))
-        ) : (
-          <p>No results found matching your active filters.</p>
-        )}
+      <div className="postDisplayBox">
+        <div className="postList">
+          {posts.length > 0 ? (
+            posts.map((post) => (
+              <PostLimitedDisplay key={post.id}
+                id={post.id}
+                Title={post.Title}
+                Body={post.Body}
+                User={post.User}
+                isDraft={post.isDraft}
+                Tags={post.Tags}
+                Date={post.Date}
+                Comments={post.Comments}
+                onClick={() => { setSelectedPostId(post.id) }}
+              />
+            ))
+          ) : (
+            <p>No results found matching your active filters.</p>
+          )}
+        </div>
       </div>
     </div>
   )

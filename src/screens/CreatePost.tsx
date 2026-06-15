@@ -111,7 +111,7 @@ export function CreatePost() {
       setErrorMessage("Could not create the post.");
       return;
     } else {setIsSubmitting(false);}
-
+    
     let body = await response.json();
     let createdPost = body.response;
 

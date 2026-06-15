@@ -15,7 +15,7 @@ export function Navbar(){
         <NavigationButton filepath={postsIcon}route="/Posts" label="Posts"/>
         <NavigationButton filepath={createIcon} route="/CreatePost" label="Create"/>
         <NavigationButton filepath={mediaIcon}route="/Media" label="Media"/>
-        <NavigationButton filepath={dashboardIcon} route="/Dashboard"label="DashBoard"/>
+        <NavigationButton filepath={dashboardIcon} route="/Dashboard"label="Dashboard"/>
         <NavigationButton filepath={profileIcon} route="/Profile" label="Profile"/>
         <NavigationButton filepath={settingsIcon}route="/Settings" label="Settings"/>
     </div>

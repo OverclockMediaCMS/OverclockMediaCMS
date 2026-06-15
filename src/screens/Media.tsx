@@ -75,23 +75,24 @@ export function Media(){
 
         <button type="submit">Search</button>
       </form>
-
-      <div className="mediaList">
-        {media.length > 0 ? (
-          media.map((item) => (
-            <MediaLimitedDisplay 
-              key={item.id}
-              id={item.id}
-              Title={item.Title}
-              FileExtension={item.FileExtension}
-              FilePath={item.FilePath}
-              Date={item.Date}
-              User={item.User}
-            />
-          ))
-        ) : (
-          <p>No media resources matched your filter choices.</p>
-        )}
+      <div className="mediaDisplayBox">
+        <div className="mediaList">
+          {media.length > 0 ? (
+            media.map((item) => (
+              <MediaLimitedDisplay 
+                key={item.id}
+                id={item.id}
+                Title={item.Title}
+                FileExtension={item.FileExtension}
+                FilePath={item.FilePath}
+                Date={item.Date}
+                User={item.User}
+              />
+            ))
+          ) : (
+            <p>No media resources matched your filter choices.</p>
+          )}
+        </div>
       </div>
     </div>
   );

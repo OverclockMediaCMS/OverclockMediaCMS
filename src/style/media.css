@@ -4,12 +4,18 @@
     width: 100%;
     flex: 1;
 }
-
-.mediaLimited {
+.mediaDisplayBox {
     border: 1px solid black;
-    margin-left: 10%;
-    margin-top: 5%;
-    margin-right: 10%;
+    margin: 2vh;
+    height: 60vh;
+    overflow-y: auto;
+}
+.mediaLimited {
+    border : 1px solid black;
+    flex-direction: column;
+    margin: 5vh;
+    justify-content: space-between;
+    display: flex;
 }
 
 .medialist {
