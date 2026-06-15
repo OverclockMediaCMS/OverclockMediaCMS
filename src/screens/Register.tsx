@@ -25,7 +25,7 @@ export function Register(){
       navigate("/Login");
     }else{
       const body = await response.json();
-      window.alert(body);
+      window.alert(body.error);
     }
   }
 
@@ -45,6 +45,7 @@ export function Register(){
         <text>Password:</text>
         <input value={password} onChange={ (e) => {setPassword(e.target.value)}}></input>
         <button onClick={submit}>Submit</button>
+        <button onClick={ () => navigate("/Login")}>Login</button>
       </label>
     </div>
   )

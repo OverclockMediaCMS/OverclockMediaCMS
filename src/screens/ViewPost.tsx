@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import type {Post} from '../models'
 import { getFromEndpoint } from "../helpers";
 import { PostDetailedDisplay } from "../components/postComponents";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { BackButton} from "../components/navigationComponents";
 
 export function ViewPost(){
   const [thisPost, setThisPost] = useState<Post | null>(null)
   const {id: thisId} = useParams();
+  const navigate = useNavigate();
+
   const fetchPost = async () => {
     const query = {id:thisId}
     let response = await getFromEndpoint("posts", query);
@@ -21,6 +24,9 @@ export function ViewPost(){
 
   return(
     <div>
+      <div style={{justifyContent: 'flex-start', width: '10vh'}}>
+        <BackButton/>
+      </div>
       <PostDetailedDisplay key={thisPost.id}
         id={thisPost.id}
         Title={thisPost.Title}

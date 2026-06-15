@@ -9,13 +9,10 @@ interface navBarArgs {
     label : string
 };
 // for back button component
-interface backButtonArgs {
-    route: string
-};
-export const BackButton :FC<backButtonArgs> = ({route}) => {
+export const BackButton = () => {
     const navigate = useNavigate();
     return (
-        <div className="navbarelements" onClick={ () => navigate(route)}>
+        <div className="navbarelements" onClick={ () => navigate(-1)}>
             <img className="navbarImage" src={backIcon}/>
         </div>
     )
