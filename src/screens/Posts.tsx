@@ -3,7 +3,7 @@ import type { Post } from "../models";
 import { useApi } from "../utilities/useApi";
 import { PostLimitedDisplay } from "../components/postComponents";
 import "../style/post.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 interface Tag {
   id: number,
@@ -88,6 +88,7 @@ export function Posts() {
         <button type="submit">Search</button>
       </form>
       <div className="postDisplayBox">
+        <Link to="/drafts">See drafts...</Link>
         <div className="postList">
           {posts.length > 0 ? (
             posts.map((post) => (

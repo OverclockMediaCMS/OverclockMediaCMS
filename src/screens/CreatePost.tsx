@@ -2,7 +2,7 @@ import  ReactMarkdown  from 'react-markdown';
 import { useEffect, useState } from "react";
 import type { CreatePost } from "../models";
 import { useApi } from "../utilities/useApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 import "../style/post.css"
 import Markdown from 'react-markdown';
@@ -22,9 +22,12 @@ export function CreatePost() {
   const context = useGlobalContext();
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [postBody, setPostBody] = useState("");
-  const [isDraft, setIsDraft] = useState(false);
+  const location = useLocation();
+  const incomingDraft = location.state?.incomingDraft;
+
+  const [title, setTitle] = useState(incomingDraft?.Title || "");
+  const [postBody, setPostBody] = useState(incomingDraft?.Body || "");
+  const [isDraft, setIsDraft] = useState(incomingDraft?.isDraft || false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 

@@ -13,6 +13,7 @@ import { useGlobalContext } from "./GlobalContext";
 import { Register } from "./screens/Register";
 import { Login } from "./screens/Login";
 import { GeneralSetting } from "./screens/GeneralSetting";
+import { DraftsList } from "./screens/Drafts";
 
 export default function App(){
   const context = useGlobalContext();
@@ -34,6 +35,7 @@ export default function App(){
             <Route path="/settings/general" element={<GeneralSetting/>}/>
             <Route path="/ViewPost/:id" element={<ViewPost/>}/>
             <Route path="/CreatePost" element={<CreatePost/>}/>
+            <Route path="/Drafts" element={<DraftsList/>}/>
           </Route>
         </Route>
         <Route element={<WithoutNavBar/>}>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Media } from "../models";
 import { useApi } from "../utilities/useApi";
 import { MediaLimitedDisplay } from "../components/mediaComponents";
+import { Link } from "react-router-dom";
 import '../style/media.css'
 
 export function Media(){
@@ -77,6 +78,7 @@ export function Media(){
         <button type="submit">Search</button>
       </form>
       <div className="mediaDisplayBox">
+        <Link to="/drafts">See drafts...</Link>
         <div className="mediaList">
           {media.length > 0 ? (
             media.map((item) => (
