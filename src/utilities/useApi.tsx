@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 
 export function useApi(){
   const context = useGlobalContext();
+  const navigate = useNavigate();
   /** 
    * pass the endpoint and query otherwise pass null
    **/
@@ -17,6 +19,10 @@ export function useApi(){
           ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
         }
       });
+      if(response.status == 401){
+        navigate("/Login");
+        return;
+      }
       return response;
     } catch (error) {
       console.error("getFromEndPoint error: ", error);
@@ -24,15 +30,21 @@ export function useApi(){
   }
   const postToEndpoint = async (endpoint : string, obj : object) : Promise<any> => {
     const url = "http://localhost:3000/" + endpoint;
+
+    const isFormData = obj instanceof FormData;
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          ...(!isFormData &&{ 'Content-Type': 'application/json' }),
           ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
         },
-        body: JSON.stringify(obj)
+        body: isFormData ? obj : JSON.stringify(obj)
       });
+      if(response.status == 401){
+        navigate("/Login");
+        return;
+      }
       return response;
     } catch (error) {
       console.error("postToEndPoint error: ", error);
@@ -52,6 +64,10 @@ export function useApi(){
           ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
         }
       });
+      if(response.status == 401){
+        navigate("/Login");
+        return;
+      }
       return response;
     } catch (error) {
       console.error("deleteFromEndpoint error: ", error);
