@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 
 export function useApi(){
   const context = useGlobalContext();
+  const navigate = useNavigate();
   /** 
    * pass the endpoint and query otherwise pass null
    **/
@@ -17,6 +19,10 @@ export function useApi(){
           ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
         }
       });
+      if(response.status == 401){
+        navigate("/Login");
+        return;
+      }
       return response;
     } catch (error) {
       console.error("getFromEndPoint error: ", error);
@@ -33,6 +39,10 @@ export function useApi(){
         },
         body: JSON.stringify(obj)
       });
+      if(response.status == 401){
+        navigate("/Login");
+        return;
+      }
       return response;
     } catch (error) {
       console.error("postToEndPoint error: ", error);
@@ -52,6 +62,10 @@ export function useApi(){
           ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
         }
       });
+      if(response.status == 401){
+        navigate("/Login");
+        return;
+      }
       return response;
     } catch (error) {
       console.error("deleteFromEndpoint error: ", error);

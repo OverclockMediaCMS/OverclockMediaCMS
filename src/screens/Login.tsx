@@ -24,8 +24,8 @@ export function Login(){
     const response = await postToEndpoint("users/login", u); 
     const body = await response.json();
     if(response.status == 200){
-      const user : User = body;
-      const jwt : string = body;
+      const user : User = body.user;
+      const jwt : string = body.token;
       context?.setUser(user);
       context?.setJwt(jwt);
       navigate("/Dashboard");
@@ -47,6 +47,7 @@ export function Login(){
   useEffect (() => {
     setEyeImg(closeEyeIcon);
   }, []);
+  
   return(
     <div>
       <label style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5vh'}}>
