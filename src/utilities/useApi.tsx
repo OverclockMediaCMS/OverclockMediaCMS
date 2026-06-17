@@ -38,5 +38,26 @@ export function useApi(){
       console.error("postToEndPoint error: ", error);
     }
   }
-  return { getFromEndpoint, postToEndpoint };
+
+  const deleteFromEndpoint = async (endpoint : string, query : any) : Promise<any> => {
+    const url = new URL("http://localhost:3000/" + endpoint);
+    if(query !== null){
+      url.search = new URLSearchParams(query).toString();
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
+        }
+      });
+      return response;
+    } catch (error) {
+      console.error("deleteFromEndpoint error: ", error);
+    }
+  }
+
+
+  return { getFromEndpoint, postToEndpoint, deleteFromEndpoint };
 }

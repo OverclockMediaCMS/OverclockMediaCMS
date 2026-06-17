@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import type { Media } from "../models";
 import { useApi } from "../utilities/useApi";
 import { MediaLimitedDisplay } from "../components/mediaComponents";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../style/media.css'
 
-export function Media(){
-  const {getFromEndpoint} = useApi();
+export function Media() {
+  const navigate = useNavigate();
+  const { getFromEndpoint } = useApi();
   const [media, setMedia] = useState<Array<Media>>([]);
   const [query, setQuery] = useState("");
 
@@ -18,16 +19,16 @@ export function Media(){
   useEffect(() => {
     fetchData("", "", true);
   }, []);
- 
-  const fetchData = async (searchParams : string | null, extensionFilter: string, isInitialLoad = false) => {
+
+  const fetchData = async (searchParams: string | null, extensionFilter: string, isInitialLoad = false) => {
     let response;
 
     const hasSearchWord = searchParams && searchParams.trim() !== "";
 
-    if(hasSearchWord || extensionFilter !== ""){
+    if (hasSearchWord || extensionFilter !== "") {
       const queryObj: any = {};
-      if(hasSearchWord) queryObj.contains = searchParams;
-      if(extensionFilter !== "") queryObj.fileExtension = extensionFilter;
+      if (hasSearchWord) queryObj.contains = searchParams;
+      if (extensionFilter !== "") queryObj.fileExtension = extensionFilter;
 
       response = await getFromEndpoint("media", queryObj);
     } else {
@@ -38,12 +39,12 @@ export function Media(){
     const fetchedMedia = Array.isArray(body) ? body : body ? [body] : [];
     setMedia(fetchedMedia);
 
-    if(isInitialLoad && fetchedMedia.length > 0){
+    if (isInitialLoad && fetchedMedia.length > 0) {
       const allExtensions = fetchedMedia.map(m => m.FileExtension.toLowerCase());
       setAvailableExtensions(Array.from(new Set(allExtensions)));
     }
   };
-  
+
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,12 +78,18 @@ export function Media(){
 
         <button type="submit">Search</button>
       </form>
-      <div className="mediaDisplayBox">
+      <div className="action">
+        <button onClick={() => navigate("/CreatePost")}>
+          <span>+</span> Add New Post
+        </button>
         <Link to="/drafts">See drafts...</Link>
+      </div>
+
+      <div className="mediaDisplayBox">
         <div className="mediaList">
           {media.length > 0 ? (
             media.map((item) => (
-              <MediaLimitedDisplay 
+              <MediaLimitedDisplay
                 key={item.id}
                 id={item.id}
                 Title={item.Title}

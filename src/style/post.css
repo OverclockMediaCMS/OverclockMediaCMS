@@ -86,3 +86,30 @@ input {
 button {
     padding: 8px 16px;
 }
+
+.action{
+    margin: 2vh;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.action span {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.action button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff;
+    color: #111111;
+    border: 1px solid #111111;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+}

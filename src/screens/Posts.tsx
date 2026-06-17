@@ -11,7 +11,7 @@ interface Tag {
 }
 
 export function Posts() {
-  const {getFromEndpoint} = useApi();
+  const { getFromEndpoint } = useApi();
   const navigate = useNavigate();
   const [posts, setPosts] = useState<Array<Post>>([]);
 
@@ -87,8 +87,13 @@ export function Posts() {
         />
         <button type="submit">Search</button>
       </form>
-      <div className="postDisplayBox">
+      <div className="action">
+        <button onClick={() => navigate("/CreatePost")}>
+          <span>+</span> Add New Post
+        </button>
         <Link to="/drafts">See drafts...</Link>
+      </div>
+      <div className="postDisplayBox">
         <div className="postList">
           {posts.length > 0 ? (
             posts.map((post) => (
