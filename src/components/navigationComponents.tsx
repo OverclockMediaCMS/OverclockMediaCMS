@@ -12,7 +12,7 @@ interface navBarArgs {
 export const BackButton = () => {
     const navigate = useNavigate();
     return (
-        <div className="navbarelements" onClick={ () => navigate(-1)}>
+        <div style={{margin: '2px', width:'5vw', height: '5vh'}}onClick={ () => navigate(-1)}>
             <img className="navbarImage" src={backIcon}/>
         </div>
     )

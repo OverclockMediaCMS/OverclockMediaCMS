@@ -26,20 +26,24 @@
     overflow-y: auto;
 }
 .postDetailed {
-    margin: 5vh;
+    margin-top: 1vh;
+    margin-left: 2vw;
+    margin-right: 2vw;
     display: flex;
     flex-direction: column;
-    width: calc(100% - 10vh);
+    width: calc(100% - 4vw);
     align-items: left;
+    height: 60vh;
+    overflow-y: auto;
+    border: 1px solid black;
 }
 .postDetailedHeader {
     flex-direction: column;
     align-self: center;
-    border: 2px solid black;
 }
 .postDetailedBody {
     border: 1px solid black;
-    margin-top: 10px;
+    margin: 2px;
     padding: 20px;
 }
 .addCommentButton {
@@ -47,6 +51,7 @@
     border: 1px solid black;
     display: flex;
     flex-direction: row;
+    width: fit-content;
 }
 .commentIcon {
     display: flex;
@@ -61,7 +66,7 @@
     border : 1px solid black;
 }
 .postDetailedTOC {
-    margin-top: 2vh;
+    margin: 2vh;
     display: flex;
     flex-direction: column;
     border : 1px solid black;

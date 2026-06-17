@@ -79,22 +79,28 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
     
     for(let line of lines){
       if(line.startsWith("###")){
-        let l = line.substring(3);
+        let l = line.substring(4);
         items.push({name:l, type: 3});
       }
       else if(line.startsWith("##")){
-        let l = line.substring(2);
+        let l = line.substring(3);
         items.push({name:l, type: 2});
       }
     }
     setTableOfContents(items);
   }
 
+  const scrollToHeading = (name: string) => {
+    document.getElementById(toSlug(name))?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
     createTableOfContents(Body);
   }, []);
 
+  const toSlug = (text: string) => text.trim().toLowerCase().replace(/\s+/g, '-');
   return (
+    <div style={{display: 'flex', flexDirection: 'column', width: 'auto'}}>
     <div className='postDetailed'>
       <div className="postDetailedHeader">
         <h1>{Title}</h1>
@@ -106,28 +112,44 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
       </div>
       <div className="postDetailedTOC">
         <h2>Table of Contents</h2>
-        <ul> {tableOfContents.map((item) => (
-          item.type == 2 
-          ? <div style={{fontWeight: 'bold' }}>{item.name}</div>
-          : <div style={{fontStyle: 'italic'}}>{item.name}</div>
-        ))}
+        <ul>
+          {tableOfContents.map((item) => (
+            <div
+            key={item.name}
+            onClick={() => scrollToHeading(item.name)}
+            style={{
+              fontWeight: item.type === 2 ? 'bold' : 'normal',
+              fontStyle: item.type === 3 ? 'italic' : 'normal',
+              cursor: 'pointer',
+            }}
+            >
+              {item.name}
+            </div>
+          ))}
         </ul>
       </div>
       <div className="postDetailedBody">
-        <ReactMarkdown>{Body}</ReactMarkdown>
+        <ReactMarkdown
+        components={{
+          h2: ({children}) => <h2 id={toSlug(String(children))}>{children}</h2>,
+          h3: ({children}) => <h3 id={toSlug(String(children))}>{children}</h3>
+        }}>{Body}</ReactMarkdown>
       </div>
+    </div >
+    <div>
       <label className="addCommentButton" onClick={ () => {setNewComment(!newComment)}}>
         <img src={plusIcon} className="commentIcon"></img>
-        <text style={{fontSize: '3vh'}}>Add Comment</text>
+        <text style={{fontSize: '3vh'}}>Add Comment </text>
       </label>
       {newComment && (
-        <label style={{display: 'flex', flexDirection: 'row'}}>
+        <label>
           <input value={commentText} onChange={ (e) => {setCommentText(e.target.value)}}></input>
           <button onClick={createComment}>Save</button>
         </label>
       )}
       <CommentSection comments={comments}/>
-    </div >
+    </div>
+    </div>
   )
 }
 
@@ -144,7 +166,7 @@ const CommentIconWithCounter: FC<{num : number}> = ({num}) => {
 
 export const CommentSection: FC<{comments: Array<Comment>}> = ({comments}) => {
   return(
-    <div>
+    <div style={{display: 'flex'}}>
       <ul>{comments.map((c) => (
         <CommentDisplay
         key={c.id}
