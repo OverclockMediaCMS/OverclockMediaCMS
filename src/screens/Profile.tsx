@@ -50,8 +50,8 @@ const Profile = () => {
             Email: userData.Email || '',
             MobilePhone: userData.MobilePhone?.toString() || '-',
             InternalPhone: userData.InternalPhone?.toString() || '-',
-            postCount: user!.postCount || 0,
-            mediaCount: user!.mediaCount || 0
+            postCount: userData.postCount - userData.mediaCount || 0,
+            mediaCount: userData.mediaCount || 0
           });
 
           setUser(userData);
@@ -79,8 +79,8 @@ const Profile = () => {
             Email: userData.Email || '',
             MobilePhone: userData.MobilePhone?.toString() || '-',
             InternalPhone: userData.InternalPhone?.toString() || '-',
-            postCount: user!.postCount || 0,
-            mediaCount: user!.mediaCount || 0
+            postCount: userData.postCount - userData.mediaCount || 0,
+            mediaCount: userData.mediaCount || 0
           });
 
           setUser(userData);
@@ -122,6 +122,16 @@ const Profile = () => {
 
         const data = await response.json();
         const updatedUser = data?.response || data;
+
+        setProfileForm(prev => ({
+          ...prev,
+          FirstName: updatedUser.FirstName || prev.FirstName,
+          LastName: updatedUser.LastName || prev.LastName,
+          Role: updatedUser.Role || prev.Role,
+          Email: updatedUser.Email || prev.Email,
+          MobilePhone: updatedUser.MobilePhone?.toString() || prev.MobilePhone,
+          InternalPhone: updatedUser.InternalPhone?.toString() || prev.InternalPhone
+        }));
 
         setUser(updatedUser);
         setIsEditing(false);

@@ -54,7 +54,7 @@ export function Media() {
   return (
     <div>
       <h1>Media</h1>
-
+      {/* Filter */}
       <form onSubmit={handleSearchSubmit} className="search-form">
         <select
           value={selectedExtension}
@@ -84,7 +84,7 @@ export function Media() {
         </button>
         <Link to="/drafts">See drafts...</Link>
       </div>
-
+      {/* Display card for each media */}
       <div className="mediaDisplayBox">
         <div className="mediaList">
           {media.length > 0 ? (
