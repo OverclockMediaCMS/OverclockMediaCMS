@@ -63,6 +63,9 @@ export function Dashboard(){
           )}
         </div>
       </div>
+        <div style={{display: 'flex', justifyContent: 'right', marginRight: '2vh'}}>
+          <button onClick={() => {navigate("/Posts")}}>See more posts</button>
+        </div>
       <h2>Recent Media</h2>
       <div className="dashboardBox">
         <div className="mediaList">
@@ -83,6 +86,9 @@ export function Dashboard(){
           )}
         </div>
       </div>
+      <div style={{display: 'flex', justifyContent: 'right', marginRight: '2vh'}}>
+          <button onClick={() => {navigate("/Media")}}>See more media</button>
+        </div>
     </div>
   )
 }
