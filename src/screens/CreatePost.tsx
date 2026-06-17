@@ -1,4 +1,4 @@
-import  ReactMarkdown  from 'react-markdown';
+import ReactMarkdown from 'react-markdown';
 import { useEffect, useState } from "react";
 import type { CreatePost } from "../models";
 import { useApi } from "../utilities/useApi";
@@ -18,7 +18,7 @@ type PreviewFile = {
 };
 
 export function CreatePost() {
-  const {postToEndpoint} = useApi();
+  const { postToEndpoint } = useApi();
   const context = useGlobalContext();
   const navigate = useNavigate();
 
@@ -77,49 +77,39 @@ export function CreatePost() {
 
   //async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
   async function handleSubmit() {
-    //event.preventDefault();
-
     if (!context?.user) {
       setErrorMessage("A user must be loaded before creating a post.");
       return;
     }
 
-    //setIsSubmitting(true);
-    setErrorMessage("");
+    try {
+      setErrorMessage("");
+      setIsSubmitting(true);
 
-    // const post = {
-    //   Title: title,
-    //   Body: postBody,
-    //   isDraft: isDraft,
-    //   Date: new Date().toISOString(),
-    //   UserId: context.user.id,
-    // };
+      const post: CreatePost = {
+        Title: title,
+        Body: postBody,
+        isDraft,
+        UserId: context.user.id,
+      };
 
+      const response = await postToEndpoint("posts/create", post);
 
-    let post: CreatePost = {
-      Title: title,
-      Body: postBody,
-      isDraft,
-      UserId: context.user.id,
-    };
+      if (!response || !response.ok) {
+        const body = response ? await response.json() : null;
+        throw new Error(body?.error ?? "Could not create the post.");
+      }
 
-    let response = await postToEndpoint("posts/create", post);
+      const body = await response.json();
+      const createdPost = body.response;
 
-    //setIsSubmitting(false);
-
-    if (!response || response.status != 200) {
-
-      let body = response.json();
-      window.alert(body.error);
-
-      setErrorMessage("Could not create the post.");
-      return;
-    } else {setIsSubmitting(false);}
-    
-    let body = await response.json();
-    let createdPost = body.response;
-
-    navigate(`/ViewPost/${createdPost.id}`);
+      navigate(`/ViewPost/${createdPost.id}`);
+    } catch (err: any) {
+      setErrorMessage(err.message);
+      window.alert(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -254,11 +244,11 @@ export function CreatePost() {
           />
         </p>
       </form>
-        <h2 style={{display: 'flex',justifyContent: 'center'}}>Preview</h2>
-      <div style={{padding: '10px', border: '1px solid black'}}>
+      <h2 style={{ display: 'flex', justifyContent: 'center' }}>Preview</h2>
+      <div style={{ padding: '10px', border: '1px solid black' }}>
         <Markdown>{postBody}</Markdown>
       </div>
     </div>
-      
+
   );
 }
