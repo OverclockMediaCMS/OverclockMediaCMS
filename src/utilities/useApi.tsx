@@ -24,14 +24,16 @@ export function useApi(){
   }
   const postToEndpoint = async (endpoint : string, obj : object) : Promise<any> => {
     const url = "http://localhost:3000/" + endpoint;
+
+    const isFormData = obj instanceof FormData;
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          ...(!isFormData &&{ 'Content-Type': 'application/json' }),
           ...(context?.jwt && {Authorization: `Bearer ${context.jwt}`})
         },
-        body: JSON.stringify(obj)
+        body: isFormData ? obj : JSON.stringify(obj)
       });
       return response;
     } catch (error) {
