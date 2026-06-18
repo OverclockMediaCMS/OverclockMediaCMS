@@ -98,6 +98,7 @@ export function Posts() {
           {posts.length > 0 ? (
             posts.map((post) => (
               <PostLimitedDisplay key={post.id}
+                Media={post.Media}
                 id={post.id}
                 Title={post.Title}
                 Body={post.Body}
