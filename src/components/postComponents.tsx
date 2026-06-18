@@ -7,6 +7,9 @@ import "../style/post.css";
 import { useGlobalContext } from "../GlobalContext";
 import { useApi} from "../utilities/useApi";
 import  ReactMarkdown  from 'react-markdown';
+import { MediaInPostDisplay } from "./mediaComponents";
+import "../style/media.css";
+
 //generic element for displaying post, takes post model as interface
 
 export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, User, Tags, Comments, Date : rawDate, onClick }) => {
@@ -30,7 +33,7 @@ export const PostLimitedDisplay: FC<Post & {onClick: () => void}> = ({ Title, Us
   )
 }
 
-export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags, Comments, Date : rawDate }) => {
+export const PostDetailedDisplay: FC<Post> = ({ id : Id, Media, Title, Body, User, Tags, Comments, Date : rawDate }) => {
   const {getFromEndpoint, postToEndpoint} = useApi();
   const [newComment, setNewComment] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -134,6 +137,25 @@ export const PostDetailedDisplay: FC<Post> = ({ id : Id, Title, Body, User, Tags
           h2: ({children}) => <h2 id={toSlug(String(children))}>{children}</h2>,
           h3: ({children}) => <h3 id={toSlug(String(children))}>{children}</h3>
         }}>{Body}</ReactMarkdown>
+      </div>
+      <div>
+        <div>
+          {Media.length > 0 ? (
+            Media.map((item) => (
+              <MediaInPostDisplay
+                key={item.id}
+                id={item.id}
+                Title={item.Title}
+                FileExtension={item.FileExtension}
+                FilePath={item.FilePath}
+                Date={item.Date}
+                User={item.User}
+              />
+            ))
+          ) : (
+            <p>No media resources matched your filter choices.</p>
+          )}
+        </div>
       </div>
     </div >
     <div>
