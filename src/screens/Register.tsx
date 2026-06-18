@@ -97,7 +97,7 @@ export function Register(){
   return(
     <div>
       <label style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5vh', justifyContent: 'center'}}>
-        <h1>Please enter your details below to register</h1>
+        <h1>Register</h1>
         <text>First Name:</text>
         <text type={fnameErrorField} style={{color: 'red'}}>{fnameError}</text>
         <input style={{width: '25vh'}}value={fname} onChange={ (e) => {setFname(e.target.value)}}></input>

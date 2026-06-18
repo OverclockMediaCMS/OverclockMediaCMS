@@ -28,6 +28,13 @@ export function CreatePost() {
   const [previews, setPreviews] = useState<PreviewFile[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
+  //validation 
+  const [titleError, setTitleError] = useState("");
+  const [bodyError, setBodyError] = useState("");
+
+  const [titleErrorField, setTitleErrorField] = useState("hidden");
+  const [bodyErrorField, setBodyErrorField] = useState("hidden");
+
   useEffect(() => {
     return () => {
       previews.forEach((file) => URL.revokeObjectURL(file.url));
@@ -130,6 +137,7 @@ export function CreatePost() {
               required
               size={32}
               maxLength={64}
+              minLength={2}
               value={title}
               onChange={(event) => setTitle(event.target.value)}
             />
@@ -186,6 +194,7 @@ export function CreatePost() {
             required
             rows={4}
             maxLength={2000}
+            minLength={2}
             value={postBody}
             onChange={(event) => setPostBody(event.target.value)}
           />

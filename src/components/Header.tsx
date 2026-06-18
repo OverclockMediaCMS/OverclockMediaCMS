@@ -7,7 +7,7 @@ import { useGlobalContext } from '../GlobalContext';
 const Header: React.FC = () => {
     const location = useLocation(); //to get current page URL path
 
-    const isPublicPage = location.pathname === "/" || location.pathname.toLowerCase() === "/login";
+    const isPublicPage = location.pathname === "/" || location.pathname.toLowerCase() === "/login" || location.pathname.toLowerCase() === '/register';
 
     const context = useGlobalContext();
 
