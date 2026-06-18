@@ -5,6 +5,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useGlobalContext } from "../GlobalContext";
 import "../style/post.css"
 import Markdown from 'react-markdown';
+import { MediaInPostDisplay, MediaLimitedDisplay } from '../components/mediaComponents';
+import type { Media } from '../models';
 
 type PreviewFile = {
   url: string;
@@ -27,13 +29,13 @@ export function CreatePost() {
 
   const [previews, setPreviews] = useState<PreviewFile[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [media, setMedia] = useState<Media[]>([]);
 
-  //validation 
-  const [titleError, setTitleError] = useState("");
-  const [bodyError, setBodyError] = useState("");
-
-  const [titleErrorField, setTitleErrorField] = useState("hidden");
-  const [bodyErrorField, setBodyErrorField] = useState("hidden");
+  useEffect(() => {
+    if(incomingDraft?.Media){
+      setMedia(incomingDraft?.Media);
+    }
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -156,7 +158,23 @@ export function CreatePost() {
             />
           </label>
         </p>
-
+        <div>
+          {media.length > 0 ? (
+            media.map((item) => (
+              <MediaInPostDisplay
+                key={item.id}
+                id={item.id}
+                Title={item.Title}
+                FileExtension={item.FileExtension}
+                FilePath={item.FilePath}
+                Date={item.Date}
+                User={item.User}
+              />
+            ))
+          ) : (
+            <p>No media attached.</p>
+          )}
+        </div>
         {/* Preview container */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
           {previews.map((file, index) => (

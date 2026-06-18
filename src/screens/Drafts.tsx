@@ -112,7 +112,8 @@ type CombinedDraftItem = LocalPostDraft | LocalMediaDraft;
 export function DraftsList() {
     const { getFromEndpoint, deleteFromEndpoint } = useApi();
     const context = useGlobalContext();
-    const [drafts, setDrafts] = useState<CombinedDraftItem[]>([]);
+    // const [drafts, setDrafts] = useState<CombinedDraftItem[]>([]);
+    const [drafts, setDrafts] = useState<Post[]>([]);
     const navigate = useNavigate();
 
     const fetchDraft = async () => {
@@ -124,21 +125,23 @@ export function DraftsList() {
         const queryParams = { userId: context.user.id };
         let response = await getFromEndpoint("drafts", queryParams);
         let body = await response.json();
-        setDrafts(body);
+        if(body !== undefined && body !== null){
+            setDrafts(body);
+        }
     };
 
     useEffect(() => {
         fetchDraft();
     }, [context?.user?.id]);
 
-    const handleDeleteDraft = async (id: number, type: 'post' | 'media') => {
+    const handleDeleteDraft = async (id: number) => {
         if (window.confirm("Are you sure you want to delete this draft?")) {
             try {
-                const queryParams = { id: id.toString(), type: type };
+                const queryParams = { id: id.toString() };
                 const response = await deleteFromEndpoint("drafts", queryParams);
 
                 if (response && response.ok) {
-                    setDrafts(prev => prev.filter(draft => !(draft.id === id && draft.type === type)));
+                    setDrafts(prev => prev.filter(draft => !(draft.id === id)));
                 } else {
                     alert("Could not delete draft from server storage.");
                 }
@@ -169,39 +172,24 @@ export function DraftsList() {
             ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                     {drafts.map((draft) => {
-                        const isPost = draft.type === 'post';
-
                         return (
-                            <div key={`${draft.type}-${draft.id}`} className="draft-item-container">
+                            <div key={`${draft.id}`} className="draft-item-container">
 
                                 <div className="draft-card-wrapper">
-                                    {isPost ? (
-                                        <PostLimitedDisplay
-                                            id={draft.id}
-                                            Title={draft.Title}
-                                            Body={draft.Body}
-                                            User={draft.User}
-                                            isDraft={draft.isDraft}
-                                            Tags={draft.Tags}
-                                            Date={draft.Date}
-                                            Comments={draft.Comments}
-                                            onClick={() => navigate("/CreatePost", { state: { incomingDraft: draft } })}
-                                        />
-                                    ) : (
-                                        <div className="postLimited" onClick={() => navigate("/CreatePost", { state: { incomingDraft: draft } })} style={{ cursor: "pointer" }}>
-                                            <MediaLimitedDisplay
-                                                id={draft.id}
-                                                Title={draft.Title}
-                                                FileExtension={(draft as Media).FileExtension}
-                                                FilePath={(draft as Media).FilePath}
-                                                Date={draft.Date}
-                                                User={draft.User}
-                                            />
-                                        </div>
-                                    )}
+                                    <PostLimitedDisplay
+                                        Media={draft.Media}
+                                        id={draft.id}
+                                        Title={draft.Title}
+                                        Body={draft.Body}
+                                        User={draft.User}
+                                        isDraft={draft.isDraft}
+                                        Tags={draft.Tags}
+                                        Date={draft.Date}
+                                        Comments={draft.Comments}
+                                        onClick={() => navigate("/CreatePost", { state: { incomingDraft: draft } })}
+                                    />
                                 </div>
-
-                                <div className="draft-actions-stack">
+                                    <div className="draft-actions-stack">
                                     <button
                                         onClick={() => navigate("/CreatePost", { state: { incomingDraft: draft } })}
                                     >
@@ -209,8 +197,8 @@ export function DraftsList() {
                                     </button>
 
                                     <button
-                                        onClick={() => handleDeleteDraft(draft.id, draft.type)}
-                                    >
+                                       onClick={() => handleDeleteDraft(draft.id)}
+                                        >
                                         <span>🗑</span> Delete
                                     </button>
                                 </div>
@@ -218,8 +206,20 @@ export function DraftsList() {
                             </div>
                         );
                     })}
+                    </div>
+                )}
                 </div>
-            )}
-        </div>
-    );
-}
+            );
+        }
+        // : (
+        //     <div className="postLimited" onClick={() => navigate("/CreatePost", { state: { incomingDraft: draft } })} style={{ cursor: "pointer" }}>
+        //         <MediaLimitedDisplay
+        //             id={draft.id}
+        //             Title={draft.Title}
+        //             FileExtension={(draft as Media).FileExtension}
+        //             FilePath={(draft as Media).FilePath}
+        //             Date={draft.Date}
+        //             User={draft.User}
+        //         />
+        //     </div>
+        // )}
