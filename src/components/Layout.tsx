@@ -1,18 +1,24 @@
 import React from 'react';
 import Header from './Header';
 import { Navbar } from './Navbar';
+import { useGlobalContext } from '../GlobalContext';
 
 interface LayoutProps {
     children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({children}) => {
+    const context = useGlobalContext();
+
     return (
         <div className='layout-wrapper'>
             <Header />
-            <main className="content">
-                {children}
-            </main>
+            <div className="layout-body">
+                {context?.user && <Navbar />}
+                <div className="content">
+                    {children}
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,6 +1,5 @@
 .dashboardBox {
     border: 1px solid black;
-    margin: 2vh;
     height: 25vh;
     overflow-y: auto;
 }

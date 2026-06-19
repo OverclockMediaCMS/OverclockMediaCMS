@@ -24,25 +24,25 @@ export default function App(){
       <div>
       <div>
       <Routes>
-        <Route path="/" element={<Login/>}/>
-        <Route element={<MustBeLoggedIn/>}>
-          <Route element={<WithNavBar/>}>
-            <Route path="/Dashboard" element={<Dashboard/>}/>
-            <Route path="/Profile" element={<Profile/>}/>
-            <Route path="/Settings" element={<Settings/>}/>
-            <Route path="/Media" element={<Media/>}/>
-            <Route path="/Posts" element={<Posts/>}/>
-            <Route path="/settings/general" element={<GeneralSetting/>}/>
-            <Route path="/ViewPost/:id" element={<ViewPost/>}/>
-            <Route path="/CreatePost" element={<CreatePost/>}/>
-            <Route path="/Drafts" element={<DraftsList/>}/>
-          </Route>
-        </Route>
-        <Route element={<WithoutNavBar/>}>
-          <Route path="/Register" element={<Register/>}/>
-          <Route path="/Login" element={<Login/>}/>
-        </Route>
-      </Routes>
+  <Route element={<WithoutNavBar/>}>
+    <Route path="/" element={<Login/>}/>
+    <Route path="/Register" element={<Register/>}/>
+    <Route path="/Login" element={<Login/>}/>
+  </Route>
+  <Route element={<MustBeLoggedIn/>}>
+    <Route element={<WithNavBar/>}>
+      <Route path="/Dashboard" element={<Dashboard/>}/>
+      <Route path="/Profile" element={<Profile/>}/>
+      <Route path="/Settings" element={<Settings/>}/>
+      <Route path="/Media" element={<Media/>}/>
+      <Route path="/Posts" element={<Posts/>}/>
+      <Route path="/settings/general" element={<GeneralSetting/>}/>
+      <Route path="/ViewPost/:id" element={<ViewPost/>}/>
+      <Route path="/CreatePost" element={<CreatePost/>}/>
+      <Route path="/Drafts" element={<DraftsList/>}/>
+    </Route>
+  </Route>
+</Routes>
       </div>
     </div>
     </Layout>
@@ -66,10 +66,9 @@ function WithNavBar(){
   return(
     <>
     <div className="app">
-      <Navbar/>
-    <div className="content">
-      <Outlet/>
-    </div>
+      <div className="content">
+        <Outlet/>
+      </div>
     </div>
     </>
   )
