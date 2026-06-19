@@ -36,6 +36,7 @@ export interface Post {
   User: User;
   Tags: Tag[];
   Comments: Comment[];
+  Media: Media[];
 }
 export interface Media {
   id: number;

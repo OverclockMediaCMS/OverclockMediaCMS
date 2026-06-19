@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react';
 import "../style/profile.css"
 import userPhoto from '../assets/UserIcon.png';
 import { useGlobalContext } from '../GlobalContext';
+import { useApi } from '../utilities/useApi';
+
+
 
 
 const Profile = () => {
+
   //Using global variables
   const context = useGlobalContext();
+
+  const { getFromEndpoint } = useApi();
   //If context missing throw error
   if (!context) {
     throw new Error("Profile component must be used within a GlobalsProvider");
   }
-
   const { user, setUser } = context;
-
-
   //Using structured interface above to manage component stage
   const [profileForm, setProfileForm] = useState({
     FirstName: '',
@@ -30,68 +33,42 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = `http://localhost:3000`;
+  const mapUserData = (userData: any) => ({
+    FirstName: userData?.FirstName || '',
+    LastName: userData?.LastName || '',
+    Role: userData?.Role || '',
+    Email: userData?.Email || '',
+    MobilePhone: userData?.MobilePhone?.toString() || '-',
+    InternalPhone: userData?.InternalPhone?.toString() || '-',
+    postCount: (userData?.postCount || 0) - (userData?.mediaCount || 0),
+    mediaCount: userData?.mediaCount || 0
+  });
 
+
+  const API_URL = `http://localhost:3000`;
   //Fetch DATA
   useEffect(() => {
-    if (user) {
-      fetch(`${API_URL}/users/${user.id}`)
-        .then(res => {
-          if (!res.ok) throw new Error("Couldn't fetch user data");
-          return res.json();
-        })
-        .then(data => {
-          const userData = data?.response || data;
+    const fetchProfile = async () => {
+      // If user exists in context, use their ID; otherwise default to 1
+      const currentUserId = user?.id || 1;
+      
+      try {
+        const res = await getFromEndpoint(`users/${currentUserId}`, null);
+        const data = await res.json();
+        const userData = data?.response || data;
 
-          setProfileForm({
-            FirstName: userData.FirstName || '',
-            LastName: userData.LastName || '',
-            Role: userData.Role || '',
-            Email: userData.Email || '',
-            MobilePhone: userData.MobilePhone?.toString() || '-',
-            InternalPhone: userData.InternalPhone?.toString() || '-',
-            postCount: userData.postCount - userData.mediaCount || 0,
-            mediaCount: userData.mediaCount || 0
-          });
+        setProfileForm(mapUserData(userData));
+        setUser(userData);
+      } catch (err) {
+        console.error("Cannot connect to backend:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-          setUser(userData);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error("Cannot connect to backend:", err);
-          setLoading(false);
-        });
-      setLoading(false);
-    } else {
-
-      fetch(`${API_URL}/users/1`)
-        .then(res => {
-          if (!res.ok) throw new Error("Couldn't fetch user data");
-          return res.json();
-        })
-        .then(data => {
-          const userData = data?.response || data;
-
-          setProfileForm({
-            FirstName: userData.FirstName || '',
-            LastName: userData.LastName || '',
-            Role: userData.Role || '',
-            Email: userData.Email || '',
-            MobilePhone: userData.MobilePhone?.toString() || '-',
-            InternalPhone: userData.InternalPhone?.toString() || '-',
-            postCount: userData.postCount - userData.mediaCount || 0,
-            mediaCount: userData.mediaCount || 0
-          });
-
-          setUser(userData);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error("Cannot connect to backend:", err);
-          setLoading(false);
-        });
-    }
-  }, []);
+    fetchProfile();
+    // Removed 'user' dependency to avoid the infinite looping behavior
+  }, [setUser]);
 
 
   //Hangle typing changes in real-time
@@ -136,7 +113,7 @@ const Profile = () => {
         setUser(updatedUser);
         setIsEditing(false);
       } catch (error) {
-        alert("Failed to save changes");
+        console.log(error);
       }
     } else {
       setIsEditing(true);

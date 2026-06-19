@@ -42,7 +42,8 @@ export function ViewPost() {
         isDraft={thisPost.isDraft}
         Tags={thisPost.Tags}
         Date={thisPost.Date}
-        Comments={thisPost.Comments} />
+        Comments={thisPost.Comments}
+        Media={thisPost.Media}/>
     </div>
 
   )

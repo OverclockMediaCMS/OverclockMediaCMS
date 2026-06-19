@@ -10,26 +10,21 @@ export function Media() {
   const { getFromEndpoint } = useApi();
   const [media, setMedia] = useState<Array<Media>>([]);
   const [query, setQuery] = useState("");
-
   const [selectedExtension, setSelectedExtension] = useState("");
-
   const [availableExtensions, setAvailableExtensions] = useState<Array<string>>([]);
 
-  //Initialize media data components
   useEffect(() => {
     fetchData("", "", true);
   }, []);
 
   const fetchData = async (searchParams: string | null, extensionFilter: string, isInitialLoad = false) => {
     let response;
-
     const hasSearchWord = searchParams && searchParams.trim() !== "";
 
     if (hasSearchWord || extensionFilter !== "") {
       const queryObj: any = {};
       if (hasSearchWord) queryObj.contains = searchParams;
       if (extensionFilter !== "") queryObj.fileExtension = extensionFilter;
-
       response = await getFromEndpoint("media", queryObj);
     } else {
       response = await getFromEndpoint("media", null);
@@ -40,32 +35,31 @@ export function Media() {
     setMedia(fetchedMedia);
 
     if (isInitialLoad && fetchedMedia.length > 0) {
-      const allExtensions = fetchedMedia.map(m => m.FileExtension.toLowerCase());
-      setAvailableExtensions(Array.from(new Set(allExtensions)));
+      const allExtensions = fetchedMedia.map((m: Media) => m.FileExtension.toLowerCase());
+      setAvailableExtensions(Array.from(new Set<string>(allExtensions)));
     }
   };
-
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     fetchData(query, selectedExtension);
-  }
+  };
 
   return (
-    <div>
+    <div className="media-page">
+
       <h1>Media</h1>
-      {/* Filter */}
+
+      {/* Search + filter */}
       <form onSubmit={handleSearchSubmit} className="search-form">
         <select
           value={selectedExtension}
           onChange={(e) => setSelectedExtension(e.target.value)}
           className="dropdown"
         >
-          <option value="">All File Types</option>
+          <option value="">All file types</option>
           {availableExtensions.map((ext) => (
-            <option key={ext} value={ext}>
-              .{ext.toUpperCase()}
-            </option>
+            <option key={ext} value={ext}>.{ext.toUpperCase()}</option>
           ))}
         </select>
 
@@ -78,15 +72,18 @@ export function Media() {
 
         <button type="submit">Search</button>
       </form>
+
+      {/* Actions */}
       <div className="action">
         <button onClick={() => navigate("/CreatePost")}>
           <span>+</span> Add New Post
         </button>
-        <Link to="/drafts">See drafts...</Link>
+        <Link to="/drafts">See drafts</Link>
       </div>
-      {/* Display card for each media */}
+
+      {/* Media list */}
       <div className="mediaDisplayBox">
-        <div className="mediaList">
+        <ul className="mediaList">
           {media.length > 0 ? (
             media.map((item) => (
               <MediaLimitedDisplay
@@ -100,10 +97,11 @@ export function Media() {
               />
             ))
           ) : (
-            <p>No media resources matched your filter choices.</p>
+            <p style={{ color: "#888", fontSize: "14px" }}>No media matched your filters.</p>
           )}
-        </div>
+        </ul>
       </div>
+
     </div>
   );
 }

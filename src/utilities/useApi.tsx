@@ -4,8 +4,10 @@ import { useGlobalContext } from "../GlobalContext";
 export function useApi(){
   const context = useGlobalContext();
   const navigate = useNavigate();
-  /** 
-   * pass the endpoint and query otherwise pass null
+  /**  
+   * GET method helper
+   * @param {string} endpoint - The endpoint that you want to target following the URL e.g posts
+   * @param {string} query - If applicable, query strings object that you want to pass, if N/A pass null
    **/
   const getFromEndpoint = async (endpoint : string, query : any) : Promise<any> => {
     const url = new URL("http://localhost:3000/" + endpoint);
@@ -28,6 +30,11 @@ export function useApi(){
       console.error("getFromEndPoint error: ", error);
     }
   }
+  /**  
+   * POST method helper
+   * @param {string} endpoint - The endpoint that you want to target following the URL e.g posts
+   * @param {string} obj - The request body json object you want to pass
+   **/
   const postToEndpoint = async (endpoint : string, obj : object) : Promise<any> => {
     const url = "http://localhost:3000/" + endpoint;
 
@@ -50,7 +57,11 @@ export function useApi(){
       console.error("postToEndPoint error: ", error);
     }
   }
-
+  /**  
+   * DELETE method helper
+   * @param {string} endpoint - The endpoint that you want to target following the URL e.g posts
+   * @param {string} query - If applicable, query strings object that you want to pass, if N/A pass null
+   **/
   const deleteFromEndpoint = async (endpoint : string, query : any) : Promise<any> => {
     const url = new URL("http://localhost:3000/" + endpoint);
     if(query !== null){

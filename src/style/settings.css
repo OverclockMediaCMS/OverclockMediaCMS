@@ -30,7 +30,7 @@
 }
 
 .settingsCard:hover {
-  background-color: #11111108; /* Subtle hover state */
+  background-color: #11111108; 
 }
 
 .profileInfo {
@@ -78,7 +78,6 @@
   font-size: 0.9rem;
 }
 
-/* Wireframe style right chevron arrow */
 .chevron::after {
   content: '';
   display: inline-block;
@@ -97,12 +96,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc; /* Gray when off */
+  background-color: #ccc;
   transition: .4s;
   border-radius: 34px;
 }
 
-/* The circular knob inside the switch */
 .slider:before {
   position: absolute;
   content: "";
@@ -116,7 +114,7 @@
 }
 
 .slider.active {
-  background-color: var(--primary-color, #0066cc); /* Uses your primary accent color */
+  background-color: var(--primary-color, #0066cc);
 }
 
 .slider.active:before {
@@ -130,7 +128,6 @@
   --subtext-color: #666666;
 }
 
-/* Dark Mode */
 [data-theme="dark"] {
   --background-canvas: #121212d5;
   --text-color: #ffffff;
@@ -138,7 +135,6 @@
   --subtext-color: #aaaaaa;
 }
 
-/* Apply the variables globally */
 body {
   background-color: var(--background-canvas);
   color: var(--text-color);
