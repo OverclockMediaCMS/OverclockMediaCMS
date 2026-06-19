@@ -28,8 +28,6 @@ export interface User {
 export interface Post {
   id: number;
   Title: string;
-  FileExtension: string;
-  FilePath: string;
   Body: string;
   isDraft: boolean;
   Date: string;

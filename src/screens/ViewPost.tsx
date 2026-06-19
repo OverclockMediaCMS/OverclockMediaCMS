@@ -35,8 +35,6 @@ export function ViewPost() {
         key={thisPost.id}
         id={thisPost.id}
         Title={thisPost.Title}
-        FileExtension={thisPost.FileExtension}
-        FilePath={thisPost.FilePath}
         Body={thisPost.Body}
         User={thisPost.User}
         isDraft={thisPost.isDraft}
