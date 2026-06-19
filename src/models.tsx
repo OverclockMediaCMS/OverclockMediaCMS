@@ -25,10 +25,11 @@ export interface User {
   postCount: number;
   mediaCount: number;
 }
-
 export interface Post {
   id: number;
   Title: string;
+  FileExtension: string;
+  FilePath: string;
   Body: string;
   isDraft: boolean;
   Date: string;
@@ -42,7 +43,7 @@ export interface Media {
   FileExtension: string;
   FilePath: string;
   Date: string;
-  User : User;
+  User: User;
 }
 export interface Comment {
   id: number;
@@ -59,8 +60,8 @@ export interface Theme {
   Darkmode: boolean;
 }
 export interface TOCItem {
-  name : string;
-  type : number;
+  name: string;
+  type: number;
 }
 export interface CreatePost {
   Title: string;

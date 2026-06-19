@@ -5,6 +5,7 @@ import { PostLimitedDisplay } from "../components/postComponents";
 import "../style/post.css"
 import { useNavigate, Link } from "react-router-dom";
 
+
 interface Tag {
   id: number,
   Title: string
@@ -100,6 +101,8 @@ export function Posts() {
               <PostLimitedDisplay key={post.id}
                 id={post.id}
                 Title={post.Title}
+                FileExtension={post.FileExtension}
+                FilePath={post.FilePath}
                 Body={post.Body}
                 User={post.User}
                 isDraft={post.isDraft}
